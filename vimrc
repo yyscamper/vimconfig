@@ -4,7 +4,7 @@
 " Last Modified Date: Jul 5, 2015
 " Source: https://github.com/yyscamper/vimconfig
 "
-" Reference: 
+" Reference:
 " (1) http://amix.dk/vim/vimrc.html
 " (2) https://github.com/amix/vimrc
 " (3) https://github.com/wklken/k-vim
@@ -14,7 +14,7 @@
 " => Vundle Setting
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible
-filetype off 
+filetype off
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -119,7 +119,7 @@ set wildmode=longest:list,full
 " Ignore case when searching
 set ignorecase
 
-" When searching try to be smart about cases 
+" When searching try to be smart about cases
 set smartcase
 
 " Highlight search results
@@ -670,7 +670,7 @@ function! AutoSetFileHead()
         call setline(1, "\#!/usr/bin/env python")
         " call append(1, "\# encoding: utf-8")
     endif
-	
+
 	" javascript (node.js)
 	if &filetype == 'javascript'
 		call setline(1, "\#!/usr/bin/env node")
@@ -687,3 +687,4 @@ func! DeleteTrailingWS()
   %s/\s\+$//ge
   exe "normal `z"
 endfunc
+
