@@ -1,10 +1,14 @@
 
 " Author: Felix Yuan
 " Email: yyscamper@163.com
-" Last Modified Date: Jun 30, 2015
+" Last Modified Date: Jul 5, 2015
+" Source: https://github.com/yyscamper/vimconfig
+"
 " Reference: 
 " (1) http://amix.dk/vim/vimrc.html
 " (2) https://github.com/amix/vimrc
+" (3) https://github.com/wklken/k-vim
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle Setting
@@ -19,19 +23,21 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'bufexplorer.zip'
 "Plugin 'Lokaltog/powerline'
 "Plugin 'ashwin/vim-powerline'
 
 Plugin 'moll/vim-node'
-Plugin 'walm/jshint.vim'
+"Plugin 'walm/jshint.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'pangloss/vim-javascript'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'rking/ag.vim'
 Plugin 'bling/vim-airline'
 Plugin 'marijnh/tern_for_vim'
-Plugin 'vim-scripts/sudo.vim'
+"Plugin 'vim-scripts/sudo.vim'
 Plugin 'elzr/vim-json'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'jiangmiao/simple-javascript-indenter'
@@ -47,6 +53,11 @@ Plugin 'tpope/vim-repeat'
 Plugin 'majutsushi/tagbar'
 Plugin 'ramitos/jsctags'
 Plugin 'klen/python-mode'
+Plugin 'thinca/vim-quickrun'
+Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'terryma/vim-expand-region'
+Plugin 'easymotion/vim-easymotion'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -73,8 +84,18 @@ let g:mapleader = ","
 " Fast saving
 nmap <leader>w :w!<cr>
 
+" Quickly close the current window
+nnoremap <leader>q :q<CR>
+
 " Map F12 to toggle Paste mode
 set pastetoggle=<F12>
+
+" Disbale paste mode when leaving insert mode
+au InsertLeave * set nopaste
+
+" Map ; to : to quickly enter command line, this will save a million keystrokes
+nnoremap ; :
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -83,7 +104,7 @@ set pastetoggle=<F12>
 set wildmenu
 
 " Ignore compiled files
-set wildignore=*.o,*~,*.pyc
+set wildignore=*.o,*~,*.pyc,*.swp,*.bak,*.class,*.svn,*.git
 
 " Make vim do normal (bash like) tab completion
 set wildmode=longest:list,full
@@ -97,7 +118,7 @@ set smartcase
 " Highlight search results
 set hlsearch
 
-" Makes search act like search in modern browsers
+" Search instantly, makes search act like search in modern browsers
 set incsearch
 
 " Don't redraw while executing macros (good performance config)
@@ -121,13 +142,18 @@ set mat=2
 "set backspace=eol,start,indent
 "set whichwrap+=<,>,h,l
 
+" Set how many lines will be kept visible when move cursor up and down
+set scrolloff=7
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
 set expandtab
 
-" Be smart when using tabs ;)
+" Be smart when using tabs
+" Insert tabs on the start of a line according to shiftwidth
+" Press backspace once will remove 4 spaces
 set smarttab
 
 " 1 tab == 4 spaces
@@ -151,18 +177,41 @@ set number
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => File encoding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Try following encoding in following defined order in auto mode
 set fileencodings=utf-8,gbk,utf-16,big5,latin1
 set fileencoding=utf-8
+
+" Set new file's encoding
 set encoding=utf-8
 set termencoding=
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Backup file to another location, currently disable this
+"set backup
+"set backext=.bak
+"set backupdir=/tmp/vimbackup/
+
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
 set nowb
 set noswapfile
+
+" Create undo file
+if has('persistent_undo')
+  set undolevels=1000         " How many undos
+  set undoreload=10000        " number of lines to save for undo
+  set undofile                " So is persistent undo ...
+  set undodir=/tmp/vimundo/
+endif
+
+" Automatically reload the vim configure file if has modification
+"autocmd! bufwritepost _vimrc source % " windows
+autocmd! bufwritepost .vimrc source % " linux
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -192,12 +241,6 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Moving around, tabs, windows and buffers
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Go to previous tab by press F7
-map <F7> :tabp<CR>
-
-" Go to next tab by press F8
-map <F8> :tabn<CR>
-
 " Useful mappings for managing tabs
 map <leader>tt :tabnew<cr>
 map <leader>to :tabonly<cr>
@@ -206,12 +249,24 @@ map <leader>tm :tabmove
 map <leader>tp :tabp<cr>
 map <leader>tn :tabn<cr>
 
+" Quickly switch to the specified tab
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+noremap <leader>7 7gt
+noremap <leader>8 8gt
+noremap <leader>9 9gt
+noremap <leader>0 :tablast<cr>
+
 " Opens a new tab with the current buffer's path
 " Super useful when editing files in the same directory
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
-" Switch CWD to the directory of the open buffer
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+" Quickly open a buffer for scripbble
+map <leader>bb :e ~/buffer<cr>
 
 " Specify the behavior when switching between buffers 
 try
@@ -248,26 +303,80 @@ set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Select whole line
+map Y y$
+
+" Select block
+nnoremap <leader>v V`}
+
+" Press w!! to sudo & write a file
+cmap w!! w !sudo tee >/dev/null %
+
+" Press U for easier redo
+nnoremap U <C-r>
+
+" Remove highlight
+noremap <silent><leader>/ :nohls<CR>
+
 " Move a line of text
 nmap <leader>lj mz:m+<cr>`z
 nmap <leader>lk mz:m-2<cr>`z
 vmap <leader>lj :m'>+<cr>`<my`>mzgv`yo`z
 vmap <leader>lk :m'<-2<cr>`>my`<mzgv`yo`z
 
+" The opened content will still keep in screen after close vim
+" This doesn't work well in SSH console
+"set t_ti= t_te=
+
+" Delete trailing white space on save
+autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.c :call DeleteTrailingWS()
+autocmd BufWrite *.cpp :call DeleteTrailingWS()
+autocmd BufWrite *.js :call DeleteTrailingWS()
+autocmd BufWrite *.java :call DeleteTrailingWS()
+autocmd BufWrite *.xml :call DeleteTrailingWS()
+
+" Automatically add the file header for the new file
+autocmd BufNewFile *.sh,*.py,*.js exec ":call AutoSetFileHead()"
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
-
-" Quickly open a buffer for scripbble
-map <leader>q :e ~/buffer<cr>
-
-" Toggle paste mode on and off
-"map <leader>pp :setlocal paste!<cr>
+noremap <Leader>mm mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Format JSON by json.tool
 "nmap <C-J> :%!python -m json.tool<CR>:setfiletype json<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Key Mapping
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"Keep search pattern at the center of the screen."
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: NERDTree
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <leader>n :NERDTreeToggle<CR>
+let NERDTreeHighlightCursorline=1
+let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '^\.svn$', '^\.hg$' ]
+"close vim if the only window left open is a NERDTree
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
+" s/v to open file in different screen
+let g:NERDTreeMapOpenSplit = 's'
+let g:NERDTreeMapOpenVSplit = 'v'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: NERDTree-tab
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+map <Leader>n <plug>NERDTreeTabsToggle<CR>
+let g:nerdtree_tabs_synchronize_view=0
+let g:nerdtree_tabs_synchronize_focus=0
+"let g:nerdtree_tabs_open_on_console_startup=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: powerline
@@ -330,9 +439,11 @@ let g:indentLine_char = '|'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Comment one line
 :map <C-L> gc
+:nmap <leader>cl gc
 
 " Comment block, only useful on visual mode
 :vmap <C-B> <C-_>b
+vmap <leader>cb <C-_>b
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: ag.vim
@@ -380,13 +491,73 @@ noremap <F3> :SyntasticCheck<CR>:Errors<CR>
 " Close the error list
 noremap <F4> ::SyntasticReset<CR>
 
-noremap <leader>n :lnext<CR>
-noremap <leader>p :lprevious<CR>
+noremap <leader>sn :lnext<CR>
+noremap <leader>sp :lprevious<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: python-mode
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:pymode = 0
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: quickrun
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:quickrun_config = {
+\   "_" : {
+\       "outputter" : "message",
+\   },
+\}
+
+let g:quickrun_no_default_key_mappings = 1
+nmap <Leader>r <Plug>(quickrun)
+map <F10> :QuickRun<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: Rainbow Parentheses
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:rbpt_colorpairs = [
+    \ ['brown',       'RoyalBlue3'],
+    \ ['Darkblue',    'SeaGreen3'],
+    \ ['darkgray',    'DarkOrchid3'],
+    \ ['darkgreen',   'firebrick3'],
+    \ ['darkcyan',    'RoyalBlue3'],
+    \ ['darkred',     'SeaGreen3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['brown',       'firebrick3'],
+    \ ['gray',        'RoyalBlue3'],
+    \ ['darkmagenta', 'DarkOrchid3'],
+    \ ['Darkblue',    'firebrick3'],
+    \ ['darkgreen',   'RoyalBlue3'],
+    \ ['darkcyan',    'SeaGreen3'],
+    \ ['darkred',     'DarkOrchid3'],
+    \ ['red',         'firebrick3'],
+    \ ]
+
+let g:rbpt_max = 16
+let g:rbpt_loadcmd_toggle = 0
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-expand-region
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+vmap v <Plug>(expand_region_expand)
+vmap V <Plug>(expand_region_shrink)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-easy-motion
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:EasyMotion_smartcase = 1
+"let g:EasyMotion_startofline = 0 " keep cursor colum when JK motion
+map <Leader><leader>h <Plug>(easymotion-linebackward)
+map <Leader><Leader>j <Plug>(easymotion-j)
+map <Leader><Leader>k <Plug>(easymotion-k)
+map <Leader><leader>l <Plug>(easymotion-lineforward)
+"map <Leader><leader>. <Plug>(easymotion-repeat)
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -447,3 +618,33 @@ function! <SID>BufcloseCloseIt()
      execute("bdelete! ".l:currentBufNum)
    endif
 endfunction
+
+" automatically set the header of the new file
+function! AutoSetFileHead()
+    " .sh
+    if &filetype == 'sh'
+        call setline(1, "\#!/bin/bash")
+    endif
+
+    " python
+    if &filetype == 'python'
+        call setline(1, "\#!/usr/bin/env python")
+        " call append(1, "\# encoding: utf-8")
+    endif
+	
+	" javascript (node.js)
+	if &filetype == 'javascript'
+		call setline(1, "\#!/usr/bin/env node")
+	endif
+
+    normal G
+    normal o
+    normal o
+endfunc
+
+" Delete trailing white space on save, useful for Python and CoffeeScript ;)
+func! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunc
