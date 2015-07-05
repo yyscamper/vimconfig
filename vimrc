@@ -245,6 +245,7 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 map <leader>tt :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
+map <leader>tq :tabclose<cr>
 map <leader>tm :tabmove
 map <leader>tp :tabp<cr>
 map <leader>tn :tabn<cr>
