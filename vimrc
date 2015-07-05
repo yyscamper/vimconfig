@@ -23,41 +23,48 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'bufexplorer.zip'
+" General plugins
 "Plugin 'Lokaltog/powerline'
 "Plugin 'ashwin/vim-powerline'
-
-Plugin 'moll/vim-node'
-"Plugin 'walm/jshint.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'pangloss/vim-javascript'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'rking/ag.vim'
 Plugin 'bling/vim-airline'
-Plugin 'marijnh/tern_for_vim'
-"Plugin 'vim-scripts/sudo.vim'
-Plugin 'elzr/vim-json'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+"Plugin 'bufexplorer.zip'
+Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'rking/ag.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'kshenoy/vim-signature'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'terryma/vim-expand-region'
+Plugin 'easymotion/vim-easymotion'
+
+" Common plugins for source codes
+Plugin 'scrooloose/syntastic'
 Plugin 'Chiel92/vim-autoformat'
-Plugin 'jiangmiao/simple-javascript-indenter'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tComment'
 Plugin 'Yggdroot/indentLine'
 "Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'kshenoy/vim-signature'
-Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
 Plugin 'majutsushi/tagbar'
-Plugin 'ramitos/jsctags'
-Plugin 'klen/python-mode'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
-Plugin 'terryma/vim-expand-region'
-Plugin 'easymotion/vim-easymotion'
 
+" Javascript/Node.js
+Plugin 'moll/vim-node'
+"Plugin 'walm/jshint.vim'
+Plugin 'marijnh/tern_for_vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'jiangmiao/simple-javascript-indenter'
+Plugin 'ramitos/jsctags'
+
+" Python
+Plugin 'klen/python-mode'
+
+" JSON
+Plugin 'elzr/vim-json'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -244,7 +251,7 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 " Useful mappings for managing tabs
 map <leader>tt :tabnew<cr>
 map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
+map <leader>tq :tabclose<cr>
 map <leader>tm :tabmove
 map <leader>tp :tabp<cr>
 map <leader>tn :tabn<cr>
@@ -318,6 +325,13 @@ nnoremap U <C-r>
 " Remove highlight
 noremap <silent><leader>/ :nohls<CR>
 
+"Keep search pattern at the center of the screen."
+nnoremap <silent> n nzz
+nnoremap <silent> N Nzz
+nnoremap <silent> * *zz
+nnoremap <silent> # #zz
+nnoremap <silent> g* g*zz
+
 " Move a line of text
 nmap <leader>lj mz:m+<cr>`z
 nmap <leader>lk mz:m-2<cr>`z
@@ -343,20 +357,10 @@ autocmd BufNewFile *.sh,*.py,*.js exec ":call AutoSetFileHead()"
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>mm mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+noremap <Leader>~m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Format JSON by json.tool
 "nmap <C-J> :%!python -m json.tool<CR>:setfiletype json<CR>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Key Mapping
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"Keep search pattern at the center of the screen."
-nnoremap <silent> n nzz
-nnoremap <silent> N Nzz
-nnoremap <silent> * *zz
-nnoremap <silent> # #zz
-nnoremap <silent> g* g*zz
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree
@@ -377,6 +381,48 @@ map <Leader>n <plug>NERDTreeTabsToggle<CR>
 let g:nerdtree_tabs_synchronize_view=0
 let g:nerdtree_tabs_synchronize_focus=0
 "let g:nerdtree_tabs_open_on_console_startup=1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: buffergator
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" New Buffergator window will be opened in horizontal top
+"     "L"   : vertical left (full screen height)
+"     "R"   : vertical right (full screen height)
+"     "T"   : horizontal top (full screen width)
+"     "B"   : horizontal bottom (full screen width)
+let g:buffergator_viewport_split_policy = "T"
+
+" Don't use default key mapping
+let g:buffergator_suppress_keymaps = 0
+let g:buffergator_suppress_mru_switch_into_splits_keymaps = 0
+
+nnoremap <silent> <Leader>b :BuffergatorOpen<CR>
+nnoremap <silent> <Leader>B :BuffergatorClose<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: ag.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Search by press :Ag [options] {pattern} [{directory}]
+let g:agprg = 'ag --smart-case --skip-vcs-ignores --nogroup --nocolor --column'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-signature
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Toggle the visible of mark and marker
+nnoremap <silent> <Leader>mv :SignatureToggleSigns<CR>
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-multiple-cursors
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Don't use plugin's default key mapping
+let g:multi_cursor_use_default_mapping=0
+
+let g:multi_cursor_next_key='<C-m>'
+let g:multi_cursor_prev_key='<C-p>'
+let g:multi_cursor_skip_key='<C-x>'
+let g:multi_cursor_quit_key='<Esc>'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: powerline
@@ -446,20 +492,13 @@ let g:indentLine_char = '|'
 vmap <leader>cb <C-_>b
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin: ag.vim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Search by press :Ag <SearchText>
-" -i: Ingore case
-let g:ackprg = 'ag -i --nogroup --column'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim easy align
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-vmap <Enter> <Plug>(EasyAlign)
+vmap <Leader>al <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
-nmap ga <Plug>(EasyAlign)
+"nmap <Leader>al <Plug>(EasyAlign)
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tagbar
