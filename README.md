@@ -3,13 +3,19 @@ This is my vim configuration file, you can copy it as you well.
 
 # Installation
 1. Get local copy
-        git clone https://github.com/yyscamper/vimconfig.git
+```
+git clone https://github.com/yyscamper/vimconfig.git
+```
 
 2. Link vim config file
-        ln -s vimconfig/vimrc ~/.vimrc
+```
+ln -s vimconfig/vimrc ~/.vimrc
+```
 
 3. Install [Vundle](https://github.com/gmarik/Vundle.vim)
-        git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+```
+git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+```
 
 4. Install plugins
 Open Vim, and type *:PluginInstall*, wait until all plugins are installed.
@@ -17,16 +23,21 @@ Open Vim, and type *:PluginInstall*, wait until all plugins are installed.
 5. Install dependancy
    (Take ubuntu for example)
     - System dependancy
-        sudo apt-get install silversearcher-ag  # This is what vim-ag needs
-        sudo apt-get install buiuld-essential cmake pyton-dev    #This is plugin 'YCM' needs
+```
+sudo apt-get install silversearcher-ag  # This is what vim-ag needs
+sudo apt-get install buiuld-essential cmake pyton-dev    #This is plugin 'YCM' needs
+```
 
     - Javscript
-        sudo apt-get install nodejs    #if you have installed node.js, you can ignore this command
-        npm install -g jslint
-        npm install -g jshint
-
+```
+sudo apt-get install nodejs    #if you have installed node.js, you can ignore this command
+npm install -g jslint
+npm install -g jshint
+```
     - Python
-        pip install pylint      # you need install python first
+```
+pip install pylint      # you need install python first
+```
 
 6. Compile YouCompleteMe
 Follows the guide in <https://github.com/Valloric/YouCompleteMe>, this will take very long time (around 1 hour in my PC).
@@ -63,6 +74,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | F2  | Toggle Tagbar (Plugin: tagbar) |
 | F3  | Do Syntastic check |
 | F4  | Toggle Syntastic error window |
+| F5  | Toggle NERDTree (Plugin: NERDTree) |
 | F10 | Quick run current file (plugin: quickrun) |
 | F11 | Toggle line number and indent line, useful when you copy screen |
 | F12 | Toggle Paste mode |
@@ -70,9 +82,16 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 ## CTRL+?
 |     Key    |  Function |
 |:----------:|:----------|
-| CTRL+b | Comment block |
-| CTRL+f | Format source file (plugin: vim-autoformat) |
-| CTRL+l | Comment one line |
+| CTRL+b | Comment block
+| CTRL+f | Format source file (plugin: vim-autoformat)
+| CTRL+l | Comment one line
+| CTRL+j | Move current line/selections down (Plugin: vim-move)
+| CTRL+k | Move current line/selections up
+| CTRL+d | Scroll down half a page  
+| CTRL+u | Scrool up half a page
+| CTRL+m | Select current word and jump to next (Plugin:vim-multiple-cursors)
+| CTRL+p | Select previous word and jump to previous (Plugin: vim-multiple-cursors)
+| CTRL+x | Skip current word (Plugin: vim-multiple-cursors)
 
 ## *{Leader}*?
 |     Key    |  Function |
@@ -141,56 +160,60 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 # Plugin
 
 ## Plugin List
+```
+" Color Scheme
+Plugin 'altercation/vim-colors-solarized'
 
+" General plugins
+"Plugin 'Lokaltog/powerline'
+"Plugin 'ashwin/vim-powerline'
+Plugin 'bling/vim-airline'
+Plugin 'scrooloose/nerdtree'
+Plugin 'jistr/vim-nerdtree-tabs'
+"Plugin 'bufexplorer.zip'
+Plugin 'jeetsukumaran/vim-buffergator'
+Plugin 'rking/ag.vim'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'kshenoy/vim-signature'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'terryma/vim-expand-region'
+Plugin 'easymotion/vim-easymotion'
+Plugin 'matze/vim-move'
 
-        " General plugins
-        "Plugin 'Lokaltog/powerline'
-        "Plugin 'ashwin/vim-powerline'
-        Plugin 'bling/vim-airline'
-        Plugin 'scrooloose/nerdtree'
-        Plugin 'jistr/vim-nerdtree-tabs'
-        Plugin 'bufexplorer.zip'
-        Plugin 'rking/ag.vim'
-        Plugin 'terryma/vim-multiple-cursors'
-        Plugin 'kshenoy/vim-signature'
-        Plugin 'ntpeters/vim-better-whitespace'
-        Plugin 'terryma/vim-expand-region'
-        Plugin 'easymotion/vim-easymotion'
+" Common plugins for source codes
+Plugin 'scrooloose/syntastic'
+Plugin 'Chiel92/vim-autoformat'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'tComment'
+Plugin 'Yggdroot/indentLine'
+"Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-repeat'
+Plugin 'majutsushi/tagbar'
+Plugin 'thinca/vim-quickrun'
+Plugin 'kien/rainbow_parentheses.vim'
 
-        " Common plugins for source codes
-        Plugin 'scrooloose/syntastic'
-        Plugin 'Chiel92/vim-autoformat'
-        Plugin 'Valloric/YouCompleteMe'
-        Plugin 'tComment'
-        Plugin 'Yggdroot/indentLine'
-        "Plugin 'nathanaelkane/vim-indent-guides'
-        Plugin 'junegunn/vim-easy-align'
-        Plugin 'tpope/vim-surround'
-        Plugin 'tpope/vim-repeat'
-        Plugin 'majutsushi/tagbar'
-        Plugin 'thinca/vim-quickrun'
-        Plugin 'kien/rainbow_parentheses.vim'
+" Javascript/Node.js
+Plugin 'moll/vim-node'
+"Plugin 'walm/jshint.vim'
+Plugin 'marijnh/tern_for_vim'
+Plugin 'pangloss/vim-javascript'
+Plugin 'jiangmiao/simple-javascript-indenter'
+Plugin 'ramitos/jsctags'
 
-        " Javascript/Node.js
-        Plugin 'moll/vim-node'
-        "Plugin 'walm/jshint.vim'
-        Plugin 'marijnh/tern_for_vim'
-        Plugin 'pangloss/vim-javascript'
-        Plugin 'jiangmiao/simple-javascript-indenter'
-        Plugin 'ramitos/jsctags'
+" Python
+Plugin 'klen/python-mode'
 
-        " Python
-        Plugin 'klen/python-mode'
+" JSON
+Plugin 'elzr/vim-json'
+```
 
-        " JSON
-        Plugin 'elzr/vim-json'
-
-
-## Plugin: [NERDTree](https://github.com/scrooloose/nerdtree)
+## Plugin: [nerdtree](https://github.com/scrooloose/nerdtree), [vim-nerdtree-tabs](https://github.com/jistr/vim-nerdtree-tabs)
 ### Global Key Mapping
 |     Key    |  Function |
 |:----------:|:----------|
-| ,n | Toggle NERDTree |
+| *F5* or ,n | Toggle NERDTree
 
 ### NERDTree Window Only Key Mapping
 |     Key    |  Function |
@@ -304,16 +327,13 @@ Use vim-buffergator instead.
 |CTRL+x| Skip current word
 |*{ESC}*| Quit from multiple cursor mode|
 
-### Demo
 ![](https://github.com/terryma/vim-multiple-cursors/blob/master/assets/example1.gif?raw=true)
 ![](https://github.com/terryma/vim-multiple-cursors/blob/master/assets/example2.gif?raw=true)
 
-
-### User Guide
+#### User Guide
 - (Chinese) <http://foocoder.com/blog/mei-ri-vimcha-jian-vim-multiple-cursors.html/>
 
 ## Plugin: [vim-easymotion](https://github.com/easymotion/vim-easymotion)
-### Key Mapping
 |     Key    |  Function |
 |:----------:|:----------|
 | ,,h | easymotion-linebackward |
@@ -321,8 +341,14 @@ Use vim-buffergator instead.
 | ,,k | easymotion-k |
 | ,,l | easymotion-lineforward |
 
-### Demo
 ![](https://camo.githubusercontent.com/d5f800b9602faaeccc2738c302776a8a11797a0e/68747470733a2f2f662e636c6f75642e6769746875622e636f6d2f6173736574732f333739373036322f323033393335392f61386539333864362d383939662d313165332d383738392d3630303235656138333635362e676966)
+
+## Plugin: [vim-move](https://github.com/matze/vim-move)
+|     Key    |  Function |
+|:----------:|:----------|
+| CTRL+j | Move current line/selections down (Plugin: vim-move)
+| CTRL+k | Move current line/selections up
+![](http://i.imgur.com/RMv8KsJ.gif)
 
 ## Plugin: [vim-quickrun](https://github.com/thinca/vim-quickrun)
 |     Key    |  Function |
@@ -332,7 +358,6 @@ Use vim-buffergator instead.
 
 
 ## Plugin: [Syntastic](https://github.com/scrooloose/syntastic)
-### Key Mapping
 |     Key    |  Function |
 |:----------:|:----------|
 | F3 | Do Syntastic check |
@@ -340,17 +365,14 @@ Use vim-buffergator instead.
 | ,sn | Go to next syntastic error |
 | ,sp | Go to prevoius syntastic error |
 
-### Screenshots
 ![](https://github.com/scrooloose/syntastic/raw/master/_assets/screenshot_1.png)
 
 ## Plugin: [YouCompleteMe](https://github.com/Valloric/YouCompleteMe)
-### Key Mapping
 |     Key    |  Function |
 |:----------:|:----------|
 | ,: | \<C-x\>\<C-o\> |
 | ALT + g | Go to definition |
 
-### Screenshots
 ![](https://camo.githubusercontent.com/1f3f922431d5363224b20e99467ff28b04e810e2/687474703a2f2f692e696d6775722e636f6d2f304f50346f6f642e676966)
 
 
@@ -366,8 +388,6 @@ Use vim-buffergator instead.
 |     Key    |  Function |
 |:----------:|:----------|
 | ,al | (Visual mode) Start interactive EasyAlign in visual mode (e.g. vip<Enter>) 
-
-### Demo
 ![](https://raw.githubusercontent.com/junegunn/i/master/vim-easy-align.gif)
 
 
@@ -384,3 +404,4 @@ To support the vim-airline or vim-powerline, the terminal font must be patched. 
 * [Amir Salihefendic's vimrc](http://amix.dk/vim/vimrc.html)
 * [amix/vimrc](https://github.com/amix/vimrc)
 * [k-vim](https://github.com/wklken/k-vim)
+
