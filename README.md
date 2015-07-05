@@ -2,44 +2,43 @@
 This is my vim configuration file, you can copy it as you well.
 
 # Installation
-1. Get local copy
+1.Get local copy
 ```
 git clone https://github.com/yyscamper/vimconfig.git
 ```
 
-2. Link vim config file
+2.Link vim config file
 ```
 ln -s vimconfig/vimrc ~/.vimrc
 ```
 
-3. Install [Vundle](https://github.com/gmarik/Vundle.vim)
+3.Install [Vundle](https://github.com/gmarik/Vundle.vim)
 ```
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
-4. Install plugins
+4.Install plugins
 Open Vim, and type *:PluginInstall*, wait until all plugins are installed.
 
-5. Install dependancy
+5.Install dependancy
    (Take ubuntu for example)
-    - System dependancy
+- System dependancy
 ```
 sudo apt-get install silversearcher-ag  # This is what vim-ag needs
 sudo apt-get install buiuld-essential cmake pyton-dev    #This is plugin 'YCM' needs
 ```
-
-    - Javscript
+- Javscript
 ```
 sudo apt-get install nodejs    #if you have installed node.js, you can ignore this command
 npm install -g jslint
 npm install -g jshint
 ```
-    - Python
+- Python
 ```
 pip install pylint      # you need install python first
 ```
 
-6. Compile YouCompleteMe
+6.Compile YouCompleteMe
 Follows the guide in <https://github.com/Valloric/YouCompleteMe>, this will take very long time (around 1 hour in my PC).
 
 # Key Mapping
