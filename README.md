@@ -41,6 +41,14 @@ pip install pylint      # you need install python first
 6.Compile YouCompleteMe
 Follows the guide in <https://github.com/Valloric/YouCompleteMe>, this will take very long time (around 1 hour in my PC).
 
+7.Install for [command-t](https://github.com/wincent/command-t)
+```
+sudo apt-get install ruby-full
+cd ~/.vim/bundle/command-t/ruby/command-t
+ruby extconf.rb
+make
+```
+
 # Key Mapping
 
 ## Vim Cheat Sheet
@@ -82,7 +90,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 |     Key    |  Function |
 |:----------:|:----------|
 | CTRL+b | Comment block
-| CTRL+f | Format source file (plugin: vim-autoformat)
+| CTRL+f | Prompt in commandline to use CtrlSF to search
 | CTRL+l | Comment one line
 | CTRL+j | Move current line/selections down (Plugin: vim-move)
 | CTRL+k | Move current line/selections up
@@ -90,7 +98,10 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | CTRL+u | Scrool up half a page
 | CTRL+m | Select current word and jump to next (Plugin:vim-multiple-cursors)
 | CTRL+p | Select previous word and jump to previous (Plugin: vim-multiple-cursors)
+| CTRL+t | Open the command-t file window
 | CTRL+x | Skip current word (Plugin: vim-multiple-cursors)
+| CTRL+y | Format source file (plugin: vim-autoformat)
+
 
 ## *{Leader}*?
 |     Key    |  Function |
@@ -160,7 +171,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 
 ## Plugin List
 ```
-" Color Scheme
+" Color scheme
 Plugin 'altercation/vim-colors-solarized'
 
 " General plugins
@@ -171,13 +182,15 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 "Plugin 'bufexplorer.zip'
 Plugin 'jeetsukumaran/vim-buffergator'
-Plugin 'rking/ag.vim'
+"Plugin 'rking/ag.vim'
+Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'kshenoy/vim-signature'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'terryma/vim-expand-region'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'matze/vim-move'
+Plugin 'wincent/command-t'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
@@ -187,8 +200,8 @@ Plugin 'tComment'
 Plugin 'Yggdroot/indentLine'
 "Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'junegunn/vim-easy-align'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
+"Plugin 'tpope/vim-surround'
+"Plugin 'tpope/vim-repeat'
 Plugin 'majutsushi/tagbar'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
@@ -255,6 +268,31 @@ Use vim-buffergator instead.
 | *{Space}* or CTRL+N | Go to the next buffer entry (or, if [count] is given, buffer with number [count]), and preview it in the previous window.
 | CTRL+*{Space}* or CTRL+P | Go to the previous buffer entry (or, if [count] is given, buffer with number [count]), and preview it in the previous window.
 
+## Plugin: [command-t](https://github.com/wincent/command-t)
+### Global Key Mapping
+|     Key    |  Function |
+|:----------:|:----------|
+| CTRL+t | Open the command-t file window
+
+### Command-t Window Only Key Mapping
+|     Key    |  Function |
+|:----------:|:----------|
+| *{Enter}* | open the selected file
+|CTRL+*{Enter}* | open the selected file in a new split window
+|CTRL+s | open the selected file in a new split window
+|CTRL+v | open the selected file in a new vertical split window
+|CTRL+t |  open the selected file in a new tab
+|CTRL+j | select next file in the file listing
+|CTRL+n | select next file in the file listing
+|*{Down}* |select next file in the file listing
+|CTRL+k | select previous file in the file listing
+|CTRL+p | select previous file in the file listing
+|*{Up}* | select previous file in the file listing
+|CTRL+f | flush the cache (see :CommandTFlush for details)
+|CTRL+q | place the current matches in the quickfix window
+|CTRL+c | cancel (dismisses file listing)
+
+![](http://i.linuxtoy.org/images/2010/05/commandt.png)
 
 ## Plugin: [vim-signature](https://github.com/kshenoy/vim-signature)
 ### Custom Key Mapping
@@ -294,6 +332,7 @@ Use vim-buffergator instead.
 
 
 ## Plugin: [ag.vim](https://github.com/rking/ag.vim)
+(Now I use ctrlsf.vim instead)
 ### Command Line
         :Ag [options] {pattern} [{directory}]
 
@@ -311,11 +350,25 @@ Use vim-buffergator instead.
 | gv | to open in vertical split silently
 | q | to close the quickfix window
 
-### User Guide
-- (Chinese) <http://foocoder.com/blog/mei-ri-vimcha-jian-dai-ma-sou-suo-ctlsf-dot-vim.html/>
+## Plugin: [ctrlsf.vim](https://github.com/dyng/ctrlsf.vim)
+### Global
+|     Key    |  Function |
+|:----------:|:----------|
+| CTRL+F | Input:CtrlSF in command line for you
+| \ | Input :CtrlSF foo in command line where foo is word under the cursor.
+| ,fv | Toggle CtrlSF result window
 
-### Screenshots
-![](http://ww3.sinaimg.cn/large/69d56e38gw1efr1w9s9i8j21kw0ghafr.jpg)
+### CtrlSF Result Window Only
+|     Key    |  Function |
+|:----------:|:----------|
+| *{Enter}* | Open corresponding file of current line in the window which CtrlSF is launched from.
+| t | Like Enter but open file in a new tab.
+| p | Like Enter but open file in a preview window.
+| O | Like Enter but always leave CtrlSF window opening.
+| T | Lkie t but focus CtrlSF window instead of new opened tab.
+| q | Quit CtrlSF window.
+| n | Move cursor to next match.
+| N | Move cursor to previous match.
 
 
 ## Plugin: [vim-multiple-cursors](https://github.com/terryma/vim-multiple-cursors)
@@ -348,6 +401,13 @@ Use vim-buffergator instead.
 | CTRL+j | Move current line/selections down (Plugin: vim-move)
 | CTRL+k | Move current line/selections up
 ![](http://i.imgur.com/RMv8KsJ.gif)
+
+## Plugin: [vim-better-whitespace](https://github.com/ntpeters/vim-better-whitespace)
+|     Key    |  Function |
+|:----------:|:----------|
+| ,*{Space}*d | Strip white space
+
+![](https://camo.githubusercontent.com/cceb11abfea4eb4359a8147074b85219e5b4314f/687474703a2f2f692e696d6775722e636f6d2f537437794874682e706e67)
 
 ## Plugin: [vim-quickrun](https://github.com/thinca/vim-quickrun)
 |     Key    |  Function |

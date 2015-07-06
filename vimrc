@@ -34,13 +34,15 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 "Plugin 'bufexplorer.zip'
 Plugin 'jeetsukumaran/vim-buffergator'
-Plugin 'rking/ag.vim'
+"Plugin 'rking/ag.vim'
+Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'kshenoy/vim-signature'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'terryma/vim-expand-region'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'matze/vim-move'
+Plugin 'wincent/command-t'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
@@ -50,8 +52,8 @@ Plugin 'tComment'
 Plugin 'Yggdroot/indentLine'
 "Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'junegunn/vim-easy-align'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-repeat'
+"Plugin 'tpope/vim-surround'
+"Plugin 'tpope/vim-repeat'
 Plugin 'majutsushi/tagbar'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
@@ -279,7 +281,7 @@ map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 " Quickly open a buffer for scripbble
 map <leader>bb :e ~/buffer<cr>
 
-" Specify the behavior when switching between buffers 
+" Specify the behavior when switching between buffers
 try
   set switchbuf=useopen,usetab,newtab
   set stal=2
@@ -347,15 +349,19 @@ vmap <leader>lk :m'<-2<cr>`>my`<mzgv`yo`z
 "set t_ti= t_te=
 
 " Delete trailing white space on save
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.c :call DeleteTrailingWS()
-autocmd BufWrite *.cpp :call DeleteTrailingWS()
-autocmd BufWrite *.js :call DeleteTrailingWS()
-autocmd BufWrite *.java :call DeleteTrailingWS()
-autocmd BufWrite *.xml :call DeleteTrailingWS()
+" autocmd BufWrite *.py :call DeleteTrailingWS()
+" autocmd BufWrite *.c :call DeleteTrailingWS()
+" autocmd BufWrite *.cpp :call DeleteTrailingWS()
+" autocmd BufWrite *.js :call DeleteTrailingWS()
+" autocmd BufWrite *.java :call DeleteTrailingWS()
+" autocmd BufWrite *.xml :call DeleteTrailingWS()
+"
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-multiple-cursors
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Automatically add the file header for the new file
-autocmd BufNewFile *.sh,*.py,*.js exec ":call AutoSetFileHead()"
+autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
@@ -388,6 +394,14 @@ let g:nerdtree_tabs_synchronize_focus=0
 "let g:nerdtree_tabs_open_on_console_startup=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: command-t
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"nnoremap <silent> <Leader>t :CommandT<CR>
+map <C-t> :CommandT<CR>
+
+let g:CommandTSmartCase = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: buffergator
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " New Buffergator window will be opened in horizontal top
@@ -409,7 +423,36 @@ nnoremap <silent> <Leader>B :BuffergatorClose<CR>
 " => Plugin: ag.vim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Search by press :Ag [options] {pattern} [{directory}]
-let g:agprg = 'ag --smart-case --skip-vcs-ignores --nogroup --nocolor --column'
+" let g:agprg = 'ag --smart-case --skip-vcs-ignores --nogroup --nocolor --column'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: ctrlsf.vim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap \ <Plug>CtrlSFCwordPath<CR>
+map <C-f> <Esc><Plug>CtrlSFPrompt
+imap <leader>fv <Esc>:CtrlSFToggle<CR>
+nmap <leader>fv :CtrlSFToggle<CR>
+
+" let g:ctrlsf_position = 'below'
+" let g:ctrlsf_winsize = '30%'
+let g:ctrlsf_auto_close = 0
+let g:ctrlsf_confirm_save = 0
+let g:ctrlsf_default_root = 'cwd'
+let g:ctrlsf_context = '-B 2 -A 2'
+
+" Note: cannot use <CR> or <C-m> for open
+" Use : <sapce> or <tab>
+let g:ctrlsf_mapping = {
+    \ "open"  : "<Space>",
+    \ "openb" : "O",
+    \ "tab"   : "t",
+    \ "tabb"  : "T",
+    \ "prevw" : "p",
+    \ "quit"  : "q",
+    \ "next"  : "n",
+    \ "prev"  : "N",
+    \ "pquit" : "q",
+    \ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-signature
@@ -432,6 +475,16 @@ let g:multi_cursor_next_key='<C-m>'
 let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-better-whitespace
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <leader><space>d :StripWhitespace<CR>
+"nmap <leader><space>t :ToggleWhitespace<CR>
+
+autocmd FileType javascript,python,c,cpp,java,html,xml,json autocmd BufWritePre <buffer> StripWhitespace
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: powerline
@@ -464,7 +517,7 @@ let g:vim_json_syntax_conceal = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-autoformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-noremap <C-F> :Autoformat<CR>
+nmap <C-y> :Autoformat<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim indent line
@@ -512,7 +565,7 @@ vmap <Leader>al <Plug>(EasyAlign)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tagbar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"if jsctags is not in the $PATH, you need  to add following 
+"if jsctags is not in the $PATH, you need  to add following
 let g:tagbar_type_javascript = {
      \ 'ctagsbin' : '/home/onrack/npm/lib/node_modules/jsctags/bin/jsctags'
 \ }
@@ -681,9 +734,9 @@ function! AutoSetFileHead()
     endif
 
 	" javascript (node.js)
-	if &filetype == 'javascript'
-		call setline(1, "\#!/usr/bin/env node")
-	endif
+    "	if &filetype == 'javascript'
+	"	call setline(1, "\#!/usr/bin/env node")
+	" endif
 
     normal G
     normal o
