@@ -24,7 +24,12 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 " Color scheme
+Plugin 'xolox/vim-colorscheme-switcher'
+Plugin 'xolox/vim-misc'
+
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'crusoexia/vim-monokai'
+Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 
 " General plugins
 "Plugin 'Lokaltog/powerline'
@@ -43,6 +48,7 @@ Plugin 'terryma/vim-expand-region'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'matze/vim-move'
 Plugin 'wincent/command-t'
+Plugin 'tpope/vim-repeat'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
@@ -57,12 +63,14 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'majutsushi/tagbar'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'airblade/vim-gitgutter'
 
 " Javascript/Node.js
 Plugin 'moll/vim-node'
 "Plugin 'walm/jshint.vim'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'crusoexia/vim-javascript-lib'
 Plugin 'jiangmiao/simple-javascript-indenter'
 Plugin 'ramitos/jsctags'
 
@@ -234,13 +242,18 @@ syntax on
 syntax enable
 
 set background=dark
+
 colorscheme solarized
+
+" Configure for solarized
 let g:solarized_termtrans=0
 let g:solarized_degrade=0
 let g:solarized_termcolors=256
 let g:solarized_contrast="normal"
 let g:solarized_visibility="normal"
+
 set t_Co=256
+
 "highlight Normal ctermfg=grey ctermbg=base03
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -356,6 +369,11 @@ vmap <leader>lk :m'<-2<cr>`>my`<mzgv`yo`z
 " autocmd BufWrite *.java :call DeleteTrailingWS()
 " autocmd BufWrite *.xml :call DeleteTrailingWS()
 "
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-colorscheme-swicher
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:colorscheme_switcher_define_mappings = 0
+map <silent> <F8> :NextColorScheme<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-multiple-cursors
@@ -482,8 +500,8 @@ let g:multi_cursor_quit_key='<Esc>'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <leader><space>d :StripWhitespace<CR>
 "nmap <leader><space>t :ToggleWhitespace<CR>
-
-autocmd FileType javascript,python,c,cpp,java,html,xml,json autocmd BufWritePre <buffer> StripWhitespace
+"
+" autocmd FileType javascript,python,c,cpp,java,html,xml,json autocmd BufWritePre <buffer> StripWhitespace
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -561,6 +579,14 @@ vmap <Leader>al <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 "nmap <Leader>al <Plug>(EasyAlign)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-gitgutter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
+nmap <Leader>vv :GitGutterToggle<CR>
+nmap <Leader>vn <Plug>GitGutterNextHunk
+nmap <Leader>vp <Plug>GitGutterPrevHunk
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tagbar

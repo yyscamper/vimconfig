@@ -82,6 +82,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | F3  | Do Syntastic check |
 | F4  | Toggle Syntastic error window |
 | F5  | Toggle NERDTree (Plugin: NERDTree) |
+| F8  | Switch Color Scheme (Plugin: vim-colorscheme-switch) |
 | F10 | Quick run current file (plugin: quickrun) |
 | F11 | Toggle line number and indent line, useful when you copy screen |
 | F12 | Toggle Paste mode |
@@ -172,7 +173,12 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 ## Plugin List
 ```
 " Color scheme
+Plugin 'xolox/vim-colorscheme-switcher'
+Plugin 'xolox/vim-misc'
+
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'crusoexia/vim-monokai'
+Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 
 " General plugins
 "Plugin 'Lokaltog/powerline'
@@ -191,6 +197,7 @@ Plugin 'terryma/vim-expand-region'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'matze/vim-move'
 Plugin 'wincent/command-t'
+Plugin 'tpope/vim-repeat'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
@@ -205,12 +212,14 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'majutsushi/tagbar'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
+Plugin 'airblade/vim-gitgutter'
 
 " Javascript/Node.js
 Plugin 'moll/vim-node'
 "Plugin 'walm/jshint.vim'
 Plugin 'marijnh/tern_for_vim'
 Plugin 'pangloss/vim-javascript'
+Plugin 'crusoexia/vim-javascript-lib'
 Plugin 'jiangmiao/simple-javascript-indenter'
 Plugin 'ramitos/jsctags'
 
@@ -448,6 +457,20 @@ Use vim-buffergator instead.
 |:----------:|:----------|
 | ,al | (Visual mode) Start interactive EasyAlign in visual mode (e.g. vip<Enter>) 
 ![](https://raw.githubusercontent.com/junegunn/i/master/vim-easy-align.gif)
+
+
+## Plugin: [GitGutter](https://github.com/airblade/vim-gitgutter/)
+|     Key    |  Function |
+|:----------:|:----------|
+| ,vv | Toggle GitGutter
+| ,vn | Go to next modification
+| ,vp | Go to previous modification
+![](https://camo.githubusercontent.com/f88161827e0cbb3144455b9e5c7582fdd5b5fc83/68747470733a2f2f7261772e6769746875622e636f6d2f616972626c6164652f76696d2d6769746775747465722f6d61737465722f73637265656e73686f742e706e67)
+
+## Plugin: [Color Scheme Switcher](https://github.com/xolox/vim-colorscheme-switcher)
+|     Key    |  Function |
+|:----------:|:----------|
+| F8 | Switch to next color scheme
 
 
 # Color Scheme
