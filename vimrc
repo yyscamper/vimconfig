@@ -48,18 +48,21 @@ Plugin 'terryma/vim-expand-region'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'matze/vim-move'
 Plugin 'wincent/command-t'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'tpope/vim-repeat'
+Plugin 'powerman/vim-plugin-AnsiEsc'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tComment'
-Plugin 'Yggdroot/indentLine'
-"Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'junegunn/vim-easy-align'
+"Plugin 'Yggdroot/indentLine'
+Plugin 'nathanaelkane/vim-indent-guides'
+"Plugin 'junegunn/vim-easy-align'
+Plugin 'godlygeek/tabular'
 "Plugin 'tpope/vim-surround'
-"Plugin 'tpope/vim-repeat'
 Plugin 'majutsushi/tagbar'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
@@ -317,6 +320,11 @@ map <leader>wl :wincmd l<cr>
 map <leader>wq :wincmd q<cr>
 map <leader>ww :wincmd w<cr>
 
+" Puts new vsplit windows to the right of the current
+set splitright
+" Puts new split windows to the bottom of the current
+set splitbelow
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Status line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -336,7 +344,7 @@ map Y y$
 nnoremap <leader>v V`}
 
 " Press w!! to sudo & write a file
-cmap w!! w !sudo tee >/dev/null %
+cmap w!! w !sudo tee % > /dev/null
 
 " Press U for easier redo
 nnoremap U <C-r>
@@ -368,7 +376,10 @@ vmap <leader>lk :m'<-2<cr>`>my`<mzgv`yo`z
 " autocmd BufWrite *.js :call DeleteTrailingWS()
 " autocmd BufWrite *.java :call DeleteTrailingWS()
 " autocmd BufWrite *.xml :call DeleteTrailingWS()
-"
+
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-colorscheme-swicher
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -409,7 +420,7 @@ map <Leader>n <plug>NERDTreeTabsToggle<CR>
 map <F5> <plug>NERDTreeTabsToggle<CR>
 let g:nerdtree_tabs_synchronize_view=0
 let g:nerdtree_tabs_synchronize_focus=0
-"let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_open_on_console_startup=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: command-t
@@ -418,6 +429,48 @@ let g:nerdtree_tabs_synchronize_focus=0
 map <C-t> :CommandT<CR>
 
 let g:CommandTSmartCase = 1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: ctrlp
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_map = '<C-p>'
+let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+
+" On Windows use "dir" as fallback command.
+if executable('ag')
+    let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+elseif executable('ack-grep')
+    let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+elseif executable('ack')
+    let s:ctrlp_fallback = 'ack %s --nocolor -f'
+else
+    let s:ctrlp_fallback = 'find %s -type f'
+endif
+if exists("g:ctrlp_user_command")
+    unlet g:ctrlp_user_command
+endif
+let g:ctrlp_user_command = {
+    \ 'types': {
+        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+    \ },
+    \ 'fallback': s:ctrlp_fallback
+\ }
+
+if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
+    " CtrlP extensions
+    let g:ctrlp_extensions = ['funky']
+
+    "funky
+    nnoremap <Leader>fu :CtrlPFunky<Cr>
+endif
+
+
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: buffergator
@@ -456,7 +509,8 @@ nmap <leader>fv :CtrlSFToggle<CR>
 let g:ctrlsf_auto_close = 0
 let g:ctrlsf_confirm_save = 0
 let g:ctrlsf_default_root = 'cwd'
-let g:ctrlsf_context = '-B 2 -A 2'
+let g:ctrlsf_context = '-C 2'
+let g:ctrlsf_position = 'bottom'
 
 " Note: cannot use <CR> or <C-m> for open
 " Use : <sapce> or <tab>
@@ -527,6 +581,15 @@ let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_key_invoke_completion = '<M-;>'
 nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
 
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-json
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -541,44 +604,78 @@ nmap <C-y> :Autoformat<CR>
 " => Plugin: vim indent line
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Vim
-let g:indentLine_color_term = 0
+"let g:indentLine_color_term = 0
 
 "GVim
-let g:indentLine_color_gui = '#1c1c1c'
+"let g:indentLine_color_gui = '#1c1c1c'
 
 " none X terminal
-let g:indentLine_color_tty_light = 7 " (default: 4)
-let g:indentLine_color_dark = 1 " (default: 2)
+"let g:indentLine_color_tty_light = 7 " (default: 4)
+"let g:indentLine_color_dark = 1 " (default: 2)
 
 " change the ident char
-let g:indentLine_char = '|'
+" let g:indentLine_char = '|'
 
 " disable by default
 "let g:indentLine_enabled = 0
 
 " Toggle both indent line and the line number, so it is useful when you
 " want to copy the screen output
-:noremap <F11> :IndentLinesToggle<CR>:set number!<CR>
+":noremap <F11> :IndentLinesToggle<CR>:set number!<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-indent-guide
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:indent_guides_start_level = 2
+let g:indent_guides_guide_size = 1
+let g:indent_guides_enable_on_vim_startup = 1
+
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=235
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
+
+:noremap <F11> :IndentGuidesToggle<CR>:set number!<CR>:NERDTreeTabsToggle<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tComment
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Comment one line
-:map <C-L> gc
+":map <C-L> gc
 :nmap <leader>cl gc
 
 " Comment block, only useful on visual mode
-:vmap <C-B> <C-_>b
+":vmap <C-B> <C-_>b
 vmap <leader>cb <C-_>b
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim easy align
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-vmap <Leader>al <Plug>(EasyAlign)
+"vmap <Leader>al <Plug>(EasyAlign)
 
 " Start interactive EasyAlign for a motion/text object (e.g. gaip)
 "nmap <Leader>al <Plug>(EasyAlign)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: tabular
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <Leader>a& :Tabularize /&<CR>
+vmap <Leader>a& :Tabularize /&<CR>
+nmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+vmap <Leader>a= :Tabularize /^[^=]*\zs=<CR>
+nmap <Leader>a=> :Tabularize /=><CR>
+vmap <Leader>a=> :Tabularize /=><CR>
+nmap <Leader>a: :Tabularize /:<CR>
+vmap <Leader>a: :Tabularize /:<CR>
+nmap <Leader>a:: :Tabularize /:\zs<CR>
+vmap <Leader>a:: :Tabularize /:\zs<CR>
+nmap <Leader>a, :Tabularize /,<CR>
+vmap <Leader>a, :Tabularize /,<CR>
+nmap <Leader>a,, :Tabularize /,\zs<CR>
+vmap <Leader>a,, :Tabularize /,\zs<CR>
+nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-gitgutter
@@ -668,7 +765,6 @@ au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-expand-region
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -685,6 +781,21 @@ map <Leader><Leader>j <Plug>(easymotion-j)
 map <Leader><Leader>k <Plug>(easymotion-k)
 map <Leader><leader>l <Plug>(easymotion-lineforward)
 "map <Leader><leader>. <Plug>(easymotion-repeat)
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: tern for vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:tern_show_argument_hints = 'no' "or 'on_hold' or 'on_move'
+let g:tern_map_keys = 0
+nnoremap <buffer> <Leader>jm :TernDoc<CR>
+nnoremap <buffer> <Leader>jb :TernDocBrowse<CR>
+nnoremap <buffer> <Leader>jy :TernType<CR>
+nnoremap <buffer> <Leader>jd :TernDef<CR>
+nnoremap <buffer> <Leader>jp :TernDefPreview<CR>
+nnoremap <buffer> <Leader>js :TernDefSplit<CR>
+nnoremap <buffer> <Leader>jt :TernDefTab<CR>
+nnoremap <buffer> <Leader>jr :TernRefs<CR>
+nnoremap <buffer> <Leader>jR :TernRename<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
