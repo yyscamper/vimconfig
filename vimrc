@@ -9,7 +9,6 @@
 " (2) https://github.com/amix/vimrc
 " (3) https://github.com/wklken/k-vim
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle Setting
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -37,6 +36,7 @@ Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Plugin 'bufexplorer.zip'
 Plugin 'jeetsukumaran/vim-buffergator'
 "Plugin 'rking/ag.vim'
@@ -52,6 +52,11 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'tpope/vim-repeat'
 Plugin 'powerman/vim-plugin-AnsiEsc'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neosnippet.vim'
+Plugin 'Shougo/neosnippet-snippets'
+Plugin 'Shougo/vimshell.vim'
+Plugin 'Shougo/vimproc.vim'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
@@ -67,6 +72,7 @@ Plugin 'majutsushi/tagbar'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
 
 " Javascript/Node.js
 Plugin 'moll/vim-node'
@@ -83,6 +89,10 @@ Plugin 'klen/python-mode'
 " JSON
 Plugin 'elzr/vim-json'
 
+" Misc
+" Plugin 'vim-scripts/Nibble'
+" Plugin 'vim-scripts/genutils'
+"
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -120,6 +130,9 @@ au InsertLeave * set nopaste
 " Map ; to : to quickly enter command line, this will save a million keystrokes
 nnoremap ; :
 
+" Map space to page down
+nnoremap <Space> <PageDown>
+nnoremap <C-@> <PageUp>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -332,7 +345,7 @@ set splitbelow
 set laststatus=2
 
 " Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h%{fugitive#statusline()}\ \ \ Line:\ %l
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Editing mappings
@@ -378,7 +391,7 @@ vmap <leader>lk :m'<-2<cr>`>my`<mzgv`yo`z
 " autocmd BufWrite *.xml :call DeleteTrailingWS()
 
 set list
-set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+set listchars=tab:›\ ,extends:#,nbsp:. " Highlight problematic whitespace
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-colorscheme-swicher
@@ -420,7 +433,7 @@ map <Leader>n <plug>NERDTreeTabsToggle<CR>
 map <F5> <plug>NERDTreeTabsToggle<CR>
 let g:nerdtree_tabs_synchronize_view=0
 let g:nerdtree_tabs_synchronize_focus=0
-let g:nerdtree_tabs_open_on_console_startup=1
+let g:nerdtree_tabs_open_on_console_startup=0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: command-t
@@ -500,9 +513,9 @@ nnoremap <silent> <Leader>B :BuffergatorClose<CR>
 " => Plugin: ctrlsf.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap \ <Plug>CtrlSFCwordPath<CR>
-map <C-f> <Esc><Plug>CtrlSFPrompt
-imap <leader>fv <Esc>:CtrlSFToggle<CR>
-nmap <leader>fv :CtrlSFToggle<CR>
+vmap <C-F> <Plug>CtrlSFVwordExec
+nmap <C-F> <Esc><Plug>CtrlSFPrompt
+map <leader>fv <Esc>:CtrlSFToggle<CR>
 
 " let g:ctrlsf_position = 'below'
 " let g:ctrlsf_winsize = '30%'
@@ -515,7 +528,7 @@ let g:ctrlsf_position = 'bottom'
 " Note: cannot use <CR> or <C-m> for open
 " Use : <sapce> or <tab>
 let g:ctrlsf_mapping = {
-    \ "open"  : "<Space>",
+    \ "open"  : "<Enter>",
     \ "openb" : "O",
     \ "tab"   : "t",
     \ "tabb"  : "T",
@@ -548,6 +561,91 @@ let g:multi_cursor_prev_key='<C-p>'
 let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: neocomplete
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+
+" For cursor moving in insert mode(Not recommended)
+"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
+"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
+"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
+"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
+" Or set this.
+"let g:neocomplete#enable_cursor_hold_i = 1
+" Or set this.
+"let g:neocomplete#enable_insert_char_pre = 1
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+" Shell like behavior(not recommended).
+"set completeopt+=longest
+"let g:neocomplete#enable_auto_select = 1
+"let g:neocomplete#disable_auto_complete = 1
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-better-whitespace
@@ -684,6 +782,16 @@ vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 nmap <Leader>vv :GitGutterToggle<CR>
 nmap <Leader>vn <Plug>GitGutterNextHunk
 nmap <Leader>vp <Plug>GitGutterPrevHunk
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-fugitive
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gv :Gvsplit<CR>
+nnoremap <leader>gt :Gtabedit<CR>
+nnoremap <leader>gl :Glog<CR>
+nnoremap <leader>gd :Gdiff<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tagbar
