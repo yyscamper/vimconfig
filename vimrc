@@ -50,6 +50,8 @@ Plugin 'matze/vim-move'
 Plugin 'wincent/command-t'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'jasoncodes/ctrlp-modified.vim'
+
 Plugin 'tpope/vim-repeat'
 "Plugin 'Shougo/neocomplete.vim'
 "Plugin 'Shougo/neosnippet.vim'
@@ -131,8 +133,8 @@ au InsertLeave * set nopaste
 nnoremap ; :
 
 " Map space to page down
-nnoremap <Space> <PageDown>
-nnoremap <C-@> <PageUp>
+nnoremap <space> <PageDown>
+:map <A-Space> <PageUp>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -450,12 +452,28 @@ let g:CommandTSmartCase = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: ctrlp
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:20'
 let g:ctrlp_map = '<C-p>'
 let g:ctrlp_cmd = 'CtrlP'
+let g:ctrlp_working_path_mode = 0
+let g:ctrlp_match_window_bottom=1
+let g:ctrlp_mruf_max=500
+let g:ctrlp_follow_symlinks=1
+
+" default by searching by filename, can be toggled to full-path mode by <C-d>
+let g:ctrlp_by_filename = 0
+
+nmap <leader>p: :CtrlP<CR>
+nmap <leader>pr :CtrlPMRU<CR>
+map <C-p>r :CtrlPMRU<CR>
+nmap <leader>px :CtrlPMixed<CR>
+map <C-p>x :CtrlPMixed<CR>
+nmap <leader>pb :CtrlPBuffer<CR>
+map <C-p>b :CtrlPBuffer<CR>
+
 let g:ctrlp_custom_ignore = {
     \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$' }
+    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.o$\|\.obj$\|\.d$' }
 
 " On Windows use "dir" as fallback command.
 if executable('ag')
@@ -478,16 +496,9 @@ let g:ctrlp_user_command = {
     \ 'fallback': s:ctrlp_fallback
 \ }
 
-if isdirectory(expand("~/.vim/bundle/ctrlp-funky/"))
-    " CtrlP extensions
-    let g:ctrlp_extensions = ['funky']
-
-    "funky
-    nnoremap <Leader>fu :CtrlPFunky<Cr>
-endif
-
-
-
+" CtrlP extensions
+let g:ctrlp_extensions = ['funky', 'modified']
+let g:ctrlp_funky_syntax_highlight = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: buffergator
@@ -509,17 +520,11 @@ nnoremap <silent> <Leader>bp :BuffergatorMruCyclePre<CR>
 nnoremap <silent> <Leader>bn :BuffergatorMruCycleNext<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin: ag.vim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Search by press :Ag [options] {pattern} [{directory}]
-" let g:agprg = 'ag --smart-case --skip-vcs-ignores --nogroup --nocolor --column'
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: ctrlsf.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap \ <Plug>CtrlSFCwordPath<CR>
-vmap <C-F> <Plug>CtrlSFVwordExec
-nmap <C-F> <Esc><Plug>CtrlPSFPrompt
+nnoremap \ <Plug>CtrlSFCwordPath<CR>
+vnoremap <C-f> <Plug>CtrlSFVwordExec
+nnoremap <C-f> <Plug>CtrlSFPrompt
 map <leader>fv <Esc>:CtrlSFToggle<CR>
 
 " let g:ctrlsf_position = 'below'
@@ -703,29 +708,6 @@ let g:vim_json_syntax_conceal = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <C-y> :Autoformat<CR>
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin: vim indent line
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Vim
-"let g:indentLine_color_term = 0
-
-"GVim
-"let g:indentLine_color_gui = '#1c1c1c'
-
-" none X terminal
-"let g:indentLine_color_tty_light = 7 " (default: 4)
-"let g:indentLine_color_dark = 1 " (default: 2)
-
-" change the ident char
-" let g:indentLine_char = '|'
-
-" disable by default
-"let g:indentLine_enabled = 0
-
-" Toggle both indent line and the line number, so it is useful when you
-" want to copy the screen output
-":noremap <F11> :IndentLinesToggle<CR>:set number!<CR>
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-indent-guide
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -742,22 +724,14 @@ autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tComment
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:tcommentMaps = 0
+
 " Comment one line
-":map <C-L> gc
-:nmap <leader>cl gc
+nnoremap <leader>cl :TComment<cr>
+vnoremap <leader>cl :TComment<cr>
 
 " Comment block, only useful on visual mode
-":vmap <C-B> <C-_>b
-vmap <leader>cb <C-_>b
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin: vim easy align
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Start interactive EasyAlign in visual mode (e.g. vip<Enter>)
-"vmap <Leader>al <Plug>(EasyAlign)
-
-" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-"nmap <Leader>al <Plug>(EasyAlign)
+vnoremap <leader>cb :TCommentBlock<cr>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tabular

@@ -73,6 +73,9 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | ,q | Quickly close current window, same as :q<CR> |
 | ,v | Select block |
 | ,w | Fast saving, same as :w!<CR> |
+| :w!! | Sudo write a file |
+|\{Space\}| Page down
+|CTRL+@ | Page up
 
 
 ## Fn Keys
@@ -90,14 +93,13 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 ## CTRL+?
 |     Key    |  Function |
 |:----------:|:----------|
-| CTRL+d | Scroll down half a page  
+| CTRL+d | Scroll down half a page
 | CTRL+f | Prompt in commandline to use CtrlSF to search
 | CTRL+i | Retrace you movement in file in forwards
-| CTRL+j | Move current line/selections down (Plugin: vim-move)
-| CTRL+k | Move current line/selections up
 | CTRL+m | Select current word and jump to next (Plugin:vim-multiple-cursors)
 | CTRL+o | Retrace your movement in file in backwards
 | CTRL+p | Select previous word and jump to previous (Plugin: vim-multiple-cursors)
+| CTRL+s | Save current file, mapping of :w!
 | CTRL+t | Open the command-t file window
 | CTRL+u | Scrool up half a page
 | CTRL+x | Skip current word (Plugin: vim-multiple-cursors)
@@ -151,6 +153,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | ,wl | Go to right window |
 | ,wq | Close window |
 | ,ww | Switch to next window |
+| ,wz | Toggle zoom current window |
 
 
 ## Buffer
@@ -185,6 +188,7 @@ Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 "Plugin 'bufexplorer.zip'
 Plugin 'jeetsukumaran/vim-buffergator'
 "Plugin 'rking/ag.vim'
@@ -196,22 +200,32 @@ Plugin 'terryma/vim-expand-region'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'matze/vim-move'
 Plugin 'wincent/command-t'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'tacahiroy/ctrlp-funky'
+Plugin 'jasoncodes/ctrlp-modified.vim'
+
 Plugin 'tpope/vim-repeat'
+"Plugin 'Shougo/neocomplete.vim'
+"Plugin 'Shougo/neosnippet.vim'
+"Plugin 'Shougo/neosnippet-snippets'
+"Plugin 'Shougo/vimshell.vim'
+"Plugin 'Shougo/vimproc.vim'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tComment'
-Plugin 'Yggdroot/indentLine'
-"Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'junegunn/vim-easy-align'
+"Plugin 'Yggdroot/indentLine'
+Plugin 'nathanaelkane/vim-indent-guides'
+"Plugin 'junegunn/vim-easy-align'
+Plugin 'godlygeek/tabular'
 "Plugin 'tpope/vim-surround'
-"Plugin 'tpope/vim-repeat'
 Plugin 'majutsushi/tagbar'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'tpope/vim-fugitive'
 
 " Javascript/Node.js
 Plugin 'moll/vim-node'
@@ -339,30 +353,11 @@ Use vim-buffergator instead.
 ![](https://github.com/kshenoy/vim-signature/blob/images/screens/vim-signature_marks_markers.png?raw=true)
 
 
-## Plugin: [ag.vim](https://github.com/rking/ag.vim)
-(Now I use ctrlsf.vim instead)
-### Command Line
-        :Ag [options] {pattern} [{directory}]
-
-### Ag Search Result Window Only
-|     Key    |  Function |
-|:----------:|:----------|
-| e | to open file and close the quickfix window
-| *{Enter}* or o | to open (same as enter)
-| go | to preview file (open but maintain focus on ag.vim results)
-| t | to open in new tab
-| T | to open in new tab silently
-| h | to open in horizontal split
-| H | to open in horizontal split silently
-| v | to open in vertical split
-| gv | to open in vertical split silently
-| q | to close the quickfix window
-
 ## Plugin: [ctrlsf.vim](https://github.com/dyng/ctrlsf.vim)
 ### Global
 |     Key    |  Function |
 |:----------:|:----------|
-| CTRL+F | Input:CtrlSF in command line for you
+| CTRL+F | (visual mode) search selected words; (normal mode) prompst for searching
 | \ | Input :CtrlSF foo in command line where foo is word under the cursor.
 | ,fv | Toggle CtrlSF result window
 
@@ -378,6 +373,34 @@ Use vim-buffergator instead.
 | n | Move cursor to next match.
 | N | Move cursor to previous match.
 
+## Plugin: [ctrlp](https://github.com/kien/ctrlp.vim)
+|     Key    |  Function |
+|:----------:|:----------|
+| CTRL+p or ,p | Trigger ctrlp in file mode
+| CTRL+pr or ,pr | Trigger ctrlp in MRU mode (Most Recently Used)
+| CTRL+px or ,px | Trigger ctrlp in mixed mode
+| CTRL+pb or ,pb | Trigger ctrlp in buffer mode
+
+Inside ctrlp result window:
+
+|     Key    |  Function |
+|:----------:|:----------|
+| \<Esc\> or CTRL+c | Exit ctrlp
+| \<F5\> | purge the cache for the current directory to get new files, remove deleted files and apply new ignore options.
+| \<F7\> | Wipe the MRU list; Delete MRU entries marked by CTRL+z
+| CTRL+f, CTRL+b | Cycle between mode
+| CTRL+d | Cycle between filename only mode and full-path mode
+| CTRL+r | Switch to regexp mode
+| CTRL+j, CTRL+k, \<Up\>, \<Down\> | Navigate the result list
+| CTRL+t | Open the selected entry in a new tab
+| CTRL+v | Open the selected entry in vertical split window
+| CTRL+x, CTRL+s | Open the selected entry in horizontal split window
+| CTRL+y | Create a new file and its parent directories
+| CTRL+z | Mark/unmark multiple files and CTRL+o to open them
+| CTRL+o | Open files marked by CTRL+z
+| Shift+Tab | Toggle the focus between the match window and the prompt
+
+![](https://github.com/wklken/gallery/raw/master/vim/ctrlp.gif?raw=true)
 
 ## Plugin: [vim-multiple-cursors](https://github.com/terryma/vim-multiple-cursors)
 |     Key    |  Function |
@@ -446,15 +469,33 @@ Use vim-buffergator instead.
 ## Plugin: [tComment](https://github.com/tomtom/tcomment_vim)
 |     Key    |  Function |
 |:----------:|:----------|
-| ,cb | Comment block, only useful on visual mode |
-| ,cl | Comment one line |
+| CTRL + / | Comment current line or selected region
+| ,cb | Comment block, only useful on visual mode
+| ,cl | Comment one line
 
-## Plugin: [vim-easy-align](https://github.com/junegunn/vim-easy-align)
+## Plugin: [tabular](https://github.com/godlygeek/tabular)
 |     Key    |  Function |
 |:----------:|:----------|
-| ,al | (Visual mode) Start interactive EasyAlign in visual mode (e.g. vip<Enter>) 
-![](https://raw.githubusercontent.com/junegunn/i/master/vim-easy-align.gif)
+| ,a& | align by &
+| ,a= | align by =
+| ,a: | align by :
+| ,a:: | align by ::
+| ,a, | align by ,
+| ,a\| | align by \|
 
+See following video for usage:
+http://media.vimcasts.org/videos/29/alignment.ogv
+
+## Plugin: [vim-fugitive](https://github.com/tpope/vim-fugitive)
+|     Key    |  Function |
+|:----------:|:----------|
+| ,gb | git blame
+| ,gd | git diff
+| ,gl | git log
+| ,gs | git status
+| ,gt | git tab edit
+| ,gv | git vertical split
+![](http://udssl.com/assets/vim/fugitive/viewing-diffs.png)
 
 ## Plugin: [GitGutter](https://github.com/airblade/vim-gitgutter/)
 |     Key    |  Function |
