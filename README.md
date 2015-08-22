@@ -90,19 +90,18 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 ## CTRL+?
 |     Key    |  Function |
 |:----------:|:----------|
-| CTRL+b | Comment block
+| CTRL+d | Scroll down half a page  
 | CTRL+f | Prompt in commandline to use CtrlSF to search
-| CTRL+l | Comment one line
+| CTRL+i | Retrace you movement in file in forwards
 | CTRL+j | Move current line/selections down (Plugin: vim-move)
 | CTRL+k | Move current line/selections up
-| CTRL+d | Scroll down half a page  
-| CTRL+u | Scrool up half a page
 | CTRL+m | Select current word and jump to next (Plugin:vim-multiple-cursors)
+| CTRL+o | Retrace your movement in file in backwards
 | CTRL+p | Select previous word and jump to previous (Plugin: vim-multiple-cursors)
 | CTRL+t | Open the command-t file window
+| CTRL+u | Scrool up half a page
 | CTRL+x | Skip current word (Plugin: vim-multiple-cursors)
 | CTRL+y | Format source file (plugin: vim-autoformat)
-
 
 ## *{Leader}*?
 |     Key    |  Function |
@@ -449,8 +448,6 @@ Use vim-buffergator instead.
 |:----------:|:----------|
 | ,cb | Comment block, only useful on visual mode |
 | ,cl | Comment one line |
-| CTRL + b | Comment block, only useful on visual mode |
-| CTRL + l | Comment one line |
 
 ## Plugin: [vim-easy-align](https://github.com/junegunn/vim-easy-align)
 |     Key    |  Function |
