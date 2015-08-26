@@ -9,6 +9,7 @@
 " (2) https://github.com/amix/vimrc
 " (3) https://github.com/wklken/k-vim
 
+" Vundle Setting & Plugins {{{
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle Setting
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -97,6 +98,7 @@ Plugin 'elzr/vim-json'
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
+" }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -212,6 +214,18 @@ set nowrap
 " Default show line number
 set number
 
+" highlight current line
+set cursorline
+
+set foldenable
+
+nnoremap B ^
+nnoremap E $
+
+nnoremap gV `[v`]   " highlight last inserted text
+
+nnoremap <leader>vo :vsp ~/.vimrc<CR>   "Open vim configuration file
+nnoremap <leader>vs :source ~/.vimrc<CR>  "source vim configuration file
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => File encoding
@@ -373,8 +387,8 @@ noremap <silent><leader>/ :nohls<CR>
 "Keep search pattern at the center of the screen."
 nnoremap <silent> n nzz
 nnoremap <silent> N Nzz
-nnoremap <silent> * *zz
-nnoremap <silent> # #zz
+nnoremap <silent> * #zz
+nnoremap <silent> # *zz
 nnoremap <silent> g* g*zz
 
 " Move a line of text
@@ -403,6 +417,9 @@ set listchars=tab:›\ ,extends:#,nbsp:. " Highlight problematic whitespace
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:colorscheme_switcher_define_mappings = 0
 map <silent> <F8> :NextColorScheme<CR>
+map <silent> <C-F8> :PrevColorScheme<CR>
+let g:colorscheme_switcher_exclude = ['default', 'blue', 'evening', 'morning',
+            \ 'pablo', 'darkblue', 'zellner', 'torte', 'peachpuff']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-multiple-cursors
@@ -522,10 +539,13 @@ nnoremap <silent> <Leader>bn :BuffergatorMruCycleNext<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: ctrlsf.vim
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap \ <Plug>CtrlSFCwordPath<CR>
-vnoremap <C-f> <Plug>CtrlSFVwordExec
-nnoremap <C-f> <Plug>CtrlSFPrompt
-map <leader>fv <Esc>:CtrlSFToggle<CR>
+nnoremap \ <Plug>CtrlSFCwordExec
+vmap <C-F> <Plug>CtrlSFVwordExec
+vmap <C-F>p <Plug>CtrlSFVwordPath
+nmap <C-F> <Plug>CtrlSFCwordExec
+nmap <C-F>p <Plug>CtrlSFCwordPath
+nmap <leader>fv <Esc>:CtrlSFToggle<CR>
+nmap <leader>fp <Plug>CtrlSFCwordPath
 
 " let g:ctrlsf_position = 'below'
 " let g:ctrlsf_winsize = '30%'
