@@ -87,6 +87,7 @@ Plugin 'ramitos/jsctags'
 
 " Python
 Plugin 'klen/python-mode'
+" Plugin 'davidhalter/jedi-vim'
 
 " JSON
 Plugin 'elzr/vim-json'
@@ -135,8 +136,16 @@ au InsertLeave * set nopaste
 nnoremap ; :
 
 " Map space to page down
-nnoremap <space> <PageDown>
+nnoremap <space> <C-D>
 :map <A-Space> <PageUp>
+
+" let textwidth=80
+" let colorcolumn=+1
+" let &colorcolumn=join(range(101,999),",")
+" let &colorcolumn="100,".join(range(120,999),",")
+highlight ColorColumn ctermbg=grey guibg=#2c2d27
+autocmd BufEnter *.py,*.js,*.json,*.sh,*.c,*.h,*.java,.vimrc,vimrc,_vimrc
+            \ exec ":call AutoSetFileLineLimit()"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -217,7 +226,7 @@ set number
 " highlight current line
 set cursorline
 
-set foldenable
+" set foldenable
 
 nnoremap B ^
 nnoremap E $
@@ -348,6 +357,7 @@ map <leader>wk :wincmd k<cr>
 map <leader>wl :wincmd l<cr>
 map <leader>wq :wincmd q<cr>
 map <leader>ww :wincmd w<cr>
+nnoremap ww :wincmd w<cr>
 
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <leader>wz :ZoomToggle<CR>
@@ -426,6 +436,7 @@ let g:colorscheme_switcher_exclude = ['default', 'blue', 'evening', 'morning',
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Automatically add the file header for the new file
 autocmd BufNewFile *.sh,*.py exec ":call AutoSetFileHead()"
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Misc
@@ -680,7 +691,7 @@ let g:multi_cursor_quit_key='<Esc>'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-better-whitespace
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <leader><space>d :StripWhitespace<CR>
+nmap <leader>d<space> :StripWhitespace<CR>
 "nmap <leader><space>t :ToggleWhitespace<CR>
 "
 " autocmd FileType javascript,python,c,cpp,java,html,xml,json autocmd BufWritePre <buffer> StripWhitespace
@@ -795,9 +806,36 @@ nnoremap <leader>gd :Gdiff<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tagbar
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"if jsctags is not in the $PATH, you need  to add following
+let g:tagbar_iconchars = ['▸', '▾']
+let g:tagbar_foldlevel = 4
+
+" let g:tagbar_type_javascript = {
+"             \ 'ctagsbin': 'jsctags'
+"             \}
+if !exists('g:tagbar_javascript_ctags_bin')
+    let g:tagbar_javascript_ctags_bin = 'esctags'
+endif
+
+if !exists('g:tagbar_javascript_ctags_memory_limit')
+    let g:tagbar_javascript_ctags_memory_limit = '128M'
+endif
+
 let g:tagbar_type_javascript = {
-     \ 'ctagsbin' : '/home/onrack/npm/lib/node_modules/jsctags/bin/jsctags'
+    \ 'ctagsbin'  : g:tagbar_javascript_ctags_bin,
+    \ 'ctagsargs' : '--memory="' . tagbar_javascript_ctags_memory_limit . '" -f -',
+    \ 'kinds'     : [
+        \ 'a:Parameters:0',
+        \ 'v:Variables:0:0',
+        \ 'p:Propertes:0:0',
+        \ 'c:Context:1:0'
+    \ ],
+    \ 'sro'        : '::',
+    \ 'kind2scope' : {
+        \ 'c' : 'context',
+    \ },
+    \ 'scope2kind' : {
+        \ 'context'  : 'c'
+    \ }
 \ }
 
 " Map F2 to toggle the tag bar
@@ -828,8 +866,34 @@ noremap <leader>sp :lprevious<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: python-mode
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:pymode = 0
+let g:pymode = 1
 
+let g:pymode_options = 1
+" let g:pymode_options_max_line_length = 128
+" let g:pymode_options_colorcolumn = 1
+
+let g:pymode_indent = 1
+let g:pymode_folding = 0
+let g:pymode_motion = 1
+
+let g:pymode_doc = 1
+let g:pymode_doc_bind = '<leader>do'
+
+let g:pymode_run = 0
+" let g:pymode_run_bind = '<leader>pr'
+
+let g:pymode_rope = 0
+"let g:pymode_rope_completion = 1
+"let g:pymode_rope_complete_on_dot = 1
+"let g:pymode_rope_autoimport = 1
+"let g:pymode_rope_autoimport_modules = ['os', 'shutil', 'datetime']
+"let g:pymode_rope_goto_definition_bind = '<leader>gd'
+
+let g:pymode_syntax = 1
+let g:pymode_syntax_slow_sync = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: quickrun
@@ -977,15 +1041,33 @@ function! AutoSetFileHead()
         " call append(1, "\# encoding: utf-8")
     endif
 
-	" javascript (node.js)
-    "	if &filetype == 'javascript'
-	"	call setline(1, "\#!/usr/bin/env node")
-	" endif
+    " javascript (node.js)
+    "   if &filetype == 'javascript'
+    "   call setline(1, "\#!/usr/bin/env node")
+    " endif
 
     normal G
     normal o
     normal o
 endfunc
+
+function! AutoSetFileLineLimit()
+    setlocal textwidth=80
+    setlocal colorcolumn=+1
+    let &colorcolumn=join(range(81,999),",")
+
+    " python
+    if &filetype == 'python'
+        let &colorcolumn="80,".join(range(129, 999), ",")
+    endif
+
+    " javascript (node.js)
+    if &filetype == 'javascript' || &filetype=='json'
+        let &colorcolumn="80,".join(range(101,999), ",")
+    endif
+
+endfunc
+
 
 " Delete trailing white space on save, useful for Python and CoffeeScript ;)
 func! DeleteTrailingWS()
