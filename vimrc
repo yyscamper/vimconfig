@@ -147,6 +147,16 @@ highlight ColorColumn ctermbg=grey guibg=#2c2d27
 autocmd BufEnter *.py,*.js,*.json,*.sh,*.c,*.h,*.java,.vimrc,vimrc,_vimrc
             \ exec ":call AutoSetFileLineLimit()"
 
+" create a new line in the end of file and jump to it
+nnoremap 'e <ESC>G$a<CR>
+
+" move to last cursor position
+nnoremap '' <C-O>
+nnoremap 'b <C-O>
+
+" move to previous cursor position
+nnoremap 'f <C-I>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -844,7 +854,24 @@ nmap <F2> :TagbarToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_javascript_jshint_args = "-c ~/.jshintrc"
+
+let g:syntastic_json_checkers = ['jsonlint']
+
 let g:syntastic_python_checkers = ['pylint']
+let g:syntastic_python_pylint_args = "-c ~/.pylintrc"
+
+let g:syntastic_sh_checkers = ['bashate']
+
+let g:syntastic_c_checkers = ['gcc']
+let g:syntastic_cpp_checkers = ['gcc']
+let g:syntastic_html_checkers = ['jshint', 'w3']
+let g:syntastic_markdown_checkers = ['mdl']
+let g:syntastic_vim_checkers = ['vimlint']
+let g:syntastic_xml_checkers = ['xmllint']
+let g:syntastic_yaml_checkers = ['jsyaml']
+
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
@@ -853,6 +880,7 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+let g:syntastic_enable_signs = 1
 
 " Manually do syntastic check
 noremap <F3> :SyntasticCheck<CR>:Errors<CR>
