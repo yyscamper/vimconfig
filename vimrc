@@ -95,7 +95,9 @@ Plugin 'elzr/vim-json'
 " Misc
 " Plugin 'vim-scripts/Nibble'
 " Plugin 'vim-scripts/genutils'
-"
+Plugin 'urthbound/hound.vim'
+Plugin 'powerman/vim-plugin-AnsiEsc'
+
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -146,6 +148,7 @@ nnoremap <space> <C-D>
 highlight ColorColumn ctermbg=grey guibg=#2c2d27
 autocmd BufEnter *.py,*.js,*.json,*.sh,*.c,*.h,*.java,.vimrc,vimrc,_vimrc
             \ exec ":call AutoSetFileLineLimit()"
+
 
 " create a new line in the end of file and jump to it
 nnoremap 'e <ESC>G$a<CR>
@@ -996,6 +999,16 @@ nnoremap <buffer> <Leader>jt :TernDefTab<CR>
 nnoremap <buffer> <Leader>jr :TernRefs<CR>
 nnoremap <buffer> <Leader>jR :TernRename<CR>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: Hound
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>fh :Hound<space>
+let g:hound_repos="*"
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: AnsiEsc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd BufEnter *.log AnsiEsc
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
@@ -1080,20 +1093,25 @@ function! AutoSetFileHead()
 endfunc
 
 function! AutoSetFileLineLimit()
-    setlocal textwidth=80
-    setlocal colorcolumn=+1
-    let &colorcolumn=join(range(81,999),",")
-
     " python
     if &filetype == 'python'
+        setlocal textwidth=128
+        setlocal colorcolumn=+1
         let &colorcolumn="80,".join(range(129, 999), ",")
+        return
     endif
 
     " javascript (node.js)
     if &filetype == 'javascript' || &filetype=='json'
+        setlocal textwidth=100
+        setlocal colorcolumn=+1
         let &colorcolumn="80,".join(range(101,999), ",")
+        return
     endif
 
+    setlocal textwidth=100
+    setlocal colorcolumn=+1
+    let &colorcolumn=join(range(81,999),",")
 endfunc
 
 
