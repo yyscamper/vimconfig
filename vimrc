@@ -926,6 +926,8 @@ let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = g:pymode_syntax_all
 let g:pymode_syntax_space_errors = g:pymode_syntax_all
 
+let g:pymode_lint = 0
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: quickrun
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
