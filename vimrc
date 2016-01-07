@@ -15,6 +15,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set nocompatible
 filetype off
+set shell=/bin/bash
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -29,6 +30,7 @@ Plugin 'xolox/vim-misc'
 
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'crusoexia/vim-monokai'
+" Plugin 'davidhalter/jedi-vim'
 Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 
 " General plugins
@@ -63,7 +65,7 @@ Plugin 'tpope/vim-repeat'
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
 Plugin 'Chiel92/vim-autoformat'
-Plugin 'Valloric/YouCompleteMe'
+" Plugin 'Valloric/YouCompleteMe'
 Plugin 'tComment'
 "Plugin 'Yggdroot/indentLine'
 Plugin 'nathanaelkane/vim-indent-guides'
@@ -87,7 +89,6 @@ Plugin 'ramitos/jsctags'
 
 " Python
 Plugin 'klen/python-mode'
-" Plugin 'davidhalter/jedi-vim'
 
 " JSON
 Plugin 'elzr/vim-json'
@@ -95,7 +96,6 @@ Plugin 'elzr/vim-json'
 " Misc
 " Plugin 'vim-scripts/Nibble'
 " Plugin 'vim-scripts/genutils'
-Plugin 'urthbound/hound.vim'
 Plugin 'powerman/vim-plugin-AnsiEsc'
 
 " All of your Plugins must be added before the following line
@@ -459,7 +459,8 @@ noremap <Leader>~m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Format JSON by json.tool
 "nmap <C-J> :%!python -m json.tool<CR>:setfiletype json<CR>
-nmap <F6> :!mocha -R spec --require /home/onrack/src/on-core/spec/helper.js %:p<CR>
+nmap <F6> :!mocha -R spec --require spec/helper.js %:p<CR>
+nmap <F7> :!./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require spec/helper.js %:p<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree
@@ -723,25 +724,25 @@ let g:airline_powerline_fonts = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: YouCompleteMe
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:ycm_complete_in_comments=1
-let g:ycm_confirm_extra_conf=0
-let g:ycm_collect_identifiers_from_tags_files=1
-inoremap <leader>; <C-x><C-o>
-set completeopt-=preview
-let g:ycm_min_num_of_chars_for_completion=1
-let g:ycm_cache_omnifunc=0
-let g:ycm_seed_identifiers_with_syntax=1
-let g:ycm_key_invoke_completion = '<M-;>'
-nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+" let g:ycm_complete_in_comments=1
+" let g:ycm_confirm_extra_conf=0
+" let g:ycm_collect_identifiers_from_tags_files=1
+" inoremap <leader>; <C-x><C-o>
+" set completeopt-=preview
+" let g:ycm_min_num_of_chars_for_completion=1
+" let g:ycm_cache_omnifunc=0
+" let g:ycm_seed_identifiers_with_syntax=1
+" let g:ycm_key_invoke_completion = '<M-;>'
+" nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
+"
+" " Enable omni completion.
+" autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+" autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+" autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+" autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+" autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-json
