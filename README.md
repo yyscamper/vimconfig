@@ -117,6 +117,14 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | ,v | Select block |
 | ,/ | Remove highlight |
 
+## ` Hotkey
+|     Key    |  Function |
+|:----------:|:----------|
+|`e | create a new line in the end of file and jump to it |
+|`b | move backward to last cursor position |
+|`` | move backward to last cursor position |
+|`f | move foreward to last cursor position |
+
 ## Line Movement
 |     Key    |  Function |
 |:----------:|:----------|
@@ -169,6 +177,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 |     Key    |  Function |
 |:----------:|:----------|
 | ,~m | Remove the windows ^M when the encoding gets messed up |
+| gV | hight last inserted text |
 
 # Plugin
 
