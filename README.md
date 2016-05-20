@@ -32,6 +32,7 @@ sudo apt-get install buiuld-essential cmake pyton-dev    #This is plugin 'YCM' n
 sudo apt-get install nodejs    #if you have installed node.js, you can ignore this command
 npm install -g jslint
 npm install -g jshint
+npm install -g esctags
 ```
 - Python
 ```
