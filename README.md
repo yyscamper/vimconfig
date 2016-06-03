@@ -4,17 +4,17 @@ This is my vim configuration file, you can copy it as you well.
 # Installation
 1.Get local copy
 ```
-git clone https://github.com/yyscamper/vimconfig.git
+git clone https://github.com/yyscamper/vimconfig.git ~/config/vim
 ```
 
 2.Link vim config file
 ```
-ln -s vimconfig/vimrc ~/.vimrc
+ln -s ~/config/vim/vimrc ~/.vimrc
 ```
 
 3.Install [Vundle](https://github.com/gmarik/Vundle.vim)
 ```
-git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ```
 
 4.Install plugins
