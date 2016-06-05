@@ -65,7 +65,7 @@ Plugin 'tpope/vim-repeat'
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
 Plugin 'Chiel92/vim-autoformat'
-" Plugin 'Valloric/YouCompleteMe'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'tComment'
 "Plugin 'Yggdroot/indentLine'
 Plugin 'nathanaelkane/vim-indent-guides'
@@ -307,6 +307,10 @@ let g:solarized_contrast="normal"
 let g:solarized_visibility="normal"
 
 set t_Co=256
+
+if exists('$TMUX')
+    set term=screen-256color
+endif
 
 "highlight Normal ctermfg=grey ctermbg=base03
 
@@ -1104,7 +1108,7 @@ function! AutoSetFileLineLimit()
     endif
 
     " javascript (node.js)
-    if &filetype == 'javascript' || &filetype=='json'
+    if &filetype == 'javascript'
         setlocal textwidth=100
         setlocal colorcolumn=+1
         let &colorcolumn="80,".join(range(101,999), ",")
