@@ -297,8 +297,6 @@ syntax enable
 
 set background=dark
 
-colorscheme solarized
-
 " Configure for solarized
 let g:solarized_termtrans=0
 let g:solarized_degrade=0
@@ -308,9 +306,7 @@ let g:solarized_visibility="normal"
 
 set t_Co=256
 
-if exists('$TMUX')
-    set term=screen-256color
-endif
+colorscheme solarized
 
 "highlight Normal ctermfg=grey ctermbg=base03
 
