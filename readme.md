@@ -57,32 +57,41 @@ make
 # Vim Object
 
 ```
-<Verb><Adverb><Object>
+<Operator><Adverb><Object>
 ```
 
-## Verb
-* d: delete
-* y: yank (copy)
-* c: change
+## Operator
+| Key Mapping |  Operator Description |
+|:----------:|:----------|
+| c  | change
+| d  | delete
+| v  | select
+| y  | yank (copy)
+| g~ | swap case
+| gu | make lowercase
+| gU | make uppercase
 
 ## Adverb
 * i: inside/inner
 * a: a/all/around
 
 ## Object
-
 | Key Mapping |  Object Description |
 |:----------:|:----------|
-| ( ) b | parentheses
-| { } B | curly braces
+| a     | argument text object
+| b ( ) | parentheses
+| B { } | curly braces
+| w     | word
+| W     | WORD
+| s     | sentence
+| p     | paragraph
+| t     | tags
 | [ ]   | square brackets
 | < >   | angle brackets
-| t     | tags
 | '     | single quotes
 | "     | doulbe quotes
 | \`    | back ticks
 | , . ; : + - = ~ _ * # / | \ & $ | Separator text objects
-| a     | argument text object
 | <count>ai | (A)n (I)ndentation level and line above.
 | <count>ii | (I)nner (I)ndentation level (no line above).
 | <count>aI | (A)n (I)ndentation level and lines above/below.
