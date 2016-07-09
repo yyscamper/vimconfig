@@ -40,6 +40,7 @@ pip install pylint      # you need install python first
 ```
 
 6.Compile YouCompleteMe
+
 Follows the guide in <http://valloric.github.io/YouCompleteMe/>, this will take very long time (around 1 hour in my PC).
 
 7.Install for [command-t](https://github.com/wincent/command-t)
@@ -87,7 +88,7 @@ make
 | <count>aI | (A)n (I)ndentation level and lines above/below.
 | <count>iI | (I)nner (I)ndentation level (no lines above/below).
 
-Ref:
+Reference:
 - https://github.com/wellle/targets.vim
 - http://www.vim.org/scripts/script.php?script_id=3037
 
@@ -590,7 +591,7 @@ http://media.vimcasts.org/videos/29/alignment.ogv
 
 
 # Color Scheme
-The color scheme is the famous [solarized](https://github.com/altercation/vim-colors-solarized).
+I prefer to the [solarized](https://github.com/altercation/vim-colors-solarized) scheme.
 
 ![](https://raw.githubusercontent.com/altercation/solarized/master/img/solarized-vim.png)
 
