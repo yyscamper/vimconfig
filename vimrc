@@ -54,6 +54,9 @@ Plugin 'wincent/command-t'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tacahiroy/ctrlp-funky'
 Plugin 'jasoncodes/ctrlp-modified.vim'
+Plugin 'mhinz/vim-grepper'
+Plugin 'wellle/targets.vim'
+Plugin 'michaeljsmith/vim-indent-object'
 
 Plugin 'tpope/vim-repeat'
 "Plugin 'Shougo/neocomplete.vim'
@@ -233,8 +236,8 @@ set si "Smart indent
 " Don't wrap lines
 set nowrap
 
-" Default show line number
-set number
+set number          " show line numbers
+set relativenumber  " show relative numbers
 
 " highlight current line
 set cursorline
@@ -248,6 +251,29 @@ nnoremap gV `[v`]   " highlight last inserted text
 
 nnoremap <leader>vo :vsp ~/.vimrc<CR>   "Open vim configuration file
 nnoremap <leader>vs :source ~/.vimrc<CR>  "source vim configuration file
+
+" Stay in visual mode when indenting. You will never have to run gv after
+" performing an indentation.
+vnoremap < <gv
+vnoremap > >gv
+
+" Make Y yank everything from the cursor to the end of the line. This makes Y
+" act more like C or D because by default, Y yanks the current line (i.e. the
+" same as yy).
+noremap Y y$
+
+" Make Ctrl-e jump to the end of the current line in the insert mode. This is
+" handy when you are in the middle of a line and would like to go to its end
+" without switching to the normal mode.
+inoremap <C-e> <C-o>$
+inoremap <C-b> <C-o>^
+
+" Allows you to easily replace the current word and all its occurrences.
+nnoremap <Leader>rc :%s/\<<C-r><C-w>\>/
+vnoremap <Leader>rc y:%s/<C-r>"/
+
+noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
+noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => File encoding
@@ -406,7 +432,7 @@ cmap w!! w !sudo tee % > /dev/null
 nnoremap U <C-r>
 
 " Remove highlight
-noremap <silent><leader>/ :nohls<CR>
+noremap <silent>'/ :nohls<CR>
 
 "Keep search pattern at the center of the screen."
 nnoremap <silent> n nzz
@@ -562,6 +588,25 @@ nnoremap <silent> <Leader>b :BuffergatorToggle<CR>
 "nnoremap <silent> <Leader>B :BuffergatorClose<CR>
 nnoremap <silent> <Leader>bp :BuffergatorMruCyclePre<CR>
 nnoremap <silent> <Leader>bn :BuffergatorMruCycleNext<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-grepper
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:grepper={}
+" Use the quickfix window.
+let g:grepper.quickfix=1
+" Open the quickfix window after the search finishes.
+let g:grepper.open=1
+" Switch to the quickfix window after the search finishes.
+let g:grepper.switch=1
+" Show the prompt by default.
+let g:grepper.prompt=1
+" Supported tools (use 'git' before 'ag').
+let g:grepper.tools=['git', 'ag', 'ack', 'grep', 'findstr', 'sift', 'pt']
+" Works like /, but uses vim-grepper to do the searching.
+nnoremap <Leader>/ :Grepper<CR>
+" Works like *, but uses vim-grepper to do the searching.
+nnoremap <Leader>* :Grepper -cword -noprompt<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: ctrlsf.vim
