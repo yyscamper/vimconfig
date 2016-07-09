@@ -43,6 +43,7 @@ pip install pylint      # you need install python first
 Follows the guide in <http://valloric.github.io/YouCompleteMe/>, this will take very long time (around 1 hour in my PC).
 
 7.Install for [command-t](https://github.com/wincent/command-t)
+
 Check https://gist.github.com/jwieringa/1348303 for compiling a vim with ruby support
 
 ```
@@ -590,6 +591,7 @@ http://media.vimcasts.org/videos/29/alignment.ogv
 
 # Color Scheme
 The color scheme is the famous [solarized](https://github.com/altercation/vim-colors-solarized).
+
 ![](https://raw.githubusercontent.com/altercation/solarized/master/img/solarized-vim.png)
 
 # Font
