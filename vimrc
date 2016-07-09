@@ -57,6 +57,7 @@ Plugin 'jasoncodes/ctrlp-modified.vim'
 Plugin 'mhinz/vim-grepper'
 Plugin 'wellle/targets.vim'
 Plugin 'michaeljsmith/vim-indent-object'
+Plugin 'xolox/vim-session'
 
 Plugin 'tpope/vim-repeat'
 "Plugin 'Shougo/neocomplete.vim'

@@ -436,7 +436,10 @@ Use vim-buffergator instead.
 ### vim-grepper Result Window Only
 |     Key    |  Function |
 |:----------:|:----------|
-| gf/gF      | Open the file
+| gf         | Edit existing file under cursor in same window
+| <C-W>f     | Edit existing file under cursor in split window
+| <C-W><C-F> | Edit existing file under cursor in split window
+| <C-W>gf    | Edit existing file under cursor in new tabpage
 
 ### Screenshot
 ![](https://github.com/mhinz/vim-grepper/blob/master/pictures/grepper-demo.gif)
