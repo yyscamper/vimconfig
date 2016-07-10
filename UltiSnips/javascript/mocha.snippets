@@ -1,0 +1,82 @@
+snippet des
+describe("${1:titile}", function() {
+    $0
+});
+endsnippet
+
+snippet it
+it("should $1", function() {
+    $0
+});
+endsnippet
+
+snippet it.
+it("should $1", function(done) {
+    $0
+});
+endsnippet
+
+snippet before
+before("$1", function() {
+    $0
+});
+endsnippet
+
+snippet before.
+before("$1", function(done) {
+    $0
+});
+endsnippet
+
+snippet beforeEach
+beforeEach("$1", function() {
+    $0
+});
+endsnippet
+
+snippet beforeEach.
+beforeEach("$1", function(done) {
+    $0
+});
+endsnippet
+
+snippet after
+after("$1", function() {
+    $0
+});
+endsnippet
+
+snippet after.
+after("$1", function(done) {
+    $0
+});
+endsnippet
+
+snippet afterEach
+afterEach("$1", function() {
+    $0
+});
+endsnippet
+
+snippet afterEach.
+afterEach("$1", function(done) {
+    $0
+});
+endsnippet
+
+snippet exp
+    expect($1).$0;
+endsnippet
+
+snippet expe
+    expect($1).to.equal($0);
+endsnippet
+
+snippet expd
+    expect($1).to.equal($0);
+endsnippet
+
+snippet exprej
+    expect($1).to.be.rejectedWith(${2:Error});
+endsnippet
+

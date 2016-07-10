@@ -1,0 +1,46 @@
+snippet job
+// Copyright `date +%Y`, EMC, Inc.
+
+'use strict';
+
+var di = require('di');
+
+module.exports = ${1:name}JobFactory;
+
+di.annotate($1JobFactory, new di.Provide('Job.${2:injectableName}));
+di.annotate($1JobFactory, new di.Inject(
+    'Job.Base',
+    'Logger',
+    'Util'
+));
+
+function $1JobFactory(
+    BaseJob,
+    logger,
+    util
+) {
+    var logger = Logger.initialize($1JobFactory);
+
+    /**
+     * $3
+     *
+     * @param {Object} options - The input options for job
+     * @param {Object} context - The runtime context for job
+     * @param {String} taskId -  The task identifier
+     * @constructor
+     */
+    function $2Job(options, context, taskId) {
+        var self = this;
+        $2.super_.call(self, logger, options, context, taskId);
+    }
+
+    util.inherits($2Job, BaseJob);
+
+    $2Job.prototype._run() {
+        var self = this;
+        self._done();
+   }
+
+    return $2Job;
+}
+endsnippet

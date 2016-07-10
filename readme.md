@@ -430,16 +430,16 @@ Use vim-buffergator instead.
 ### Global
 |     Key    |  Function |
 |:----------:|:----------|
-| <Leader>/  | Prompt text to do searching, use `TAB` to switch tools
-| <Leader>*  | Quick search the word under cursor
+| ,/  | Prompt text to do searching, use `TAB` to switch tools
+| ,*  | Quick search the word under cursor
 
 ### vim-grepper Result Window Only
 |     Key    |  Function |
 |:----------:|:----------|
 | gf         | Edit existing file under cursor in same window
-| <C-W>f     | Edit existing file under cursor in split window
-| <C-W><C-F> | Edit existing file under cursor in split window
-| <C-W>gf    | Edit existing file under cursor in new tabpage
+| \<C-W\>f     | Edit existing file under cursor in split window
+| \<C-W\>\<C-F\> | Edit existing file under cursor in split window
+| \<C-W\>gf    | Edit existing file under cursor in new tabpage
 
 ### Screenshot
 ![](https://github.com/mhinz/vim-grepper/blob/master/pictures/grepper-demo.gif)
@@ -569,10 +569,20 @@ Inside ctrlp result window:
 |:----------:|:----------|
 | ,a& | align by &
 | ,a= | align by =
+| ,a=> | align by =>
 | ,a: | align by :
 | ,a:: | align by ::
 | ,a, | align by ,
+| ,a,, | align by ,,
 | ,a\| | align by \|
+| ,a( | align by (
+| ,a\[ | align by \[
+| ,a{ | align by {
+| ,a< | align by <
+| ,a- | align by -
+| ,a* | align by *
+| ,a\" | align by \"
+| ,a\' | align by \'
 
 See following video for usage:
 http://media.vimcasts.org/videos/29/alignment.ogv
@@ -601,6 +611,21 @@ http://media.vimcasts.org/videos/29/alignment.ogv
 |:----------:|:----------|
 | F8 | Switch to next color scheme
 
+## Plugin: [UltiSnips](https://github.com/SirVer/ultisnips)
+|     Key    |  Function |
+|:----------:|:----------|
+| INSERT | Insert snippet
+| CTRL+n | Jump to next trigger
+| CTRL+l | Jump to previous trigger
+![](https://camo.githubusercontent.com/296aecf30e1607233814196db6bd3f5f47e70c73/68747470733a2f2f7261772e6769746875622e636f6d2f5369725665722f756c7469736e6970732f6d61737465722f646f632f64656d6f2e676966)
+
+## Plugin: [vim-surround](https://github.com/tpope/vim-surround)
+|     Key    |  Function |
+|:----------:|:----------|
+| cs<SRC-SYM><DST-SYM> | Change surround from SRC symbol to DST symbol
+| ys<OBJ><SYM>         | Add surround for the OBJ with SYM
+| ds<SYM>              | Delete surround, <SYM> is the symbol of surround
+NOTE: the repeat `.` works for vim-surround.
 
 # Color Scheme
 I prefer to the [solarized](https://github.com/altercation/vim-colors-solarized) scheme.

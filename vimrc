@@ -65,6 +65,8 @@ Plugin 'tpope/vim-repeat'
 "Plugin 'Shougo/neosnippet-snippets'
 "Plugin 'Shougo/vimshell.vim'
 "Plugin 'Shougo/vimproc.vim'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
@@ -75,7 +77,7 @@ Plugin 'tComment'
 Plugin 'nathanaelkane/vim-indent-guides'
 "Plugin 'junegunn/vim-easy-align'
 Plugin 'godlygeek/tabular'
-"Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-surround'
 Plugin 'majutsushi/tagbar'
 Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
@@ -250,8 +252,11 @@ nnoremap E $
 
 nnoremap gV `[v`]   " highlight last inserted text
 
-nnoremap <leader>vo :vsp ~/.vimrc<CR>   "Open vim configuration file
-nnoremap <leader>vs :source ~/.vimrc<CR>  "source vim configuration file
+"Open vim configuration file
+nnoremap <leader>vo :vsp ~/.vimrc<CR>
+
+"source vim configuration file
+nnoremap <leader>vs :source ~/.vimrc<CR>
 
 " Stay in visual mode when indenting. You will never have to run gv after
 " performing an indentation.
@@ -842,6 +847,22 @@ nmap <Leader>a, :Tabularize /,<CR>
 vmap <Leader>a, :Tabularize /,<CR>
 nmap <Leader>a,, :Tabularize /,\zs<CR>
 vmap <Leader>a,, :Tabularize /,\zs<CR>
+nmap <Leader>a( :Tabularize /(<CR>
+vmap <Leader>a( :Tabularize /(<CR>
+nmap <Leader>a[ :Tabularize /[<CR>
+vmap <Leader>a[ :Tabularize /[<CR>
+nmap <Leader>a{ :Tabularize /{<CR>
+vmap <Leader>a{ :Tabularize /{<CR>
+nmap <Leader>a- :Tabularize /-<CR>
+vmap <Leader>a- :Tabularize /-<CR>
+nmap <Leader>a* :Tabularize /*<CR>
+vmap <Leader>a* :Tabularize /*<CR>
+nmap <Leader>a< :Tabularize /<<CR>
+vmap <Leader>a< :Tabularize /<<CR>
+nmap <Leader>a" :Tabularize /"<CR>
+vmap <Leader>a" :Tabularize /"<CR>
+nmap <Leader>a' :Tabularize /'<CR>
+vmap <Leader>a' :Tabularize /'<CR>
 nmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 vmap <Leader>a<Bar> :Tabularize /<Bar><CR>
 
@@ -1057,6 +1078,15 @@ let g:hound_repos="*"
 " => Plugin: AnsiEsc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd BufEnter *.log AnsiEsc
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: ultisnips
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:UltiSnipsExpandTrigger="<Insert>"
+" let g:UltiSnipsListSnippets="<Leader>ul"
+let g:UltiSnipsJumpForwardTrigger="<c-n>"
+let g:UltiSnipsJumpBackwardTrigger="<c-l>"
+" let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
