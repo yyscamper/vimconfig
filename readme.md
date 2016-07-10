@@ -151,7 +151,9 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | CTRL+e | Go to the end of line (only in INSERT mode)
 | CTRL+f | Prompt in commandline to use CtrlSF to search
 | CTRL+i | Retrace you movement in file in forwards
+| CTRL+l | Jump to the previous snippet trigger (Plugin: UltiSnips)
 | CTRL+m | Select current word and jump to next (Plugin:vim-multiple-cursors)
+| CTRL+n | Jump to the next snippet trigger (Plugin: UltiSnips)
 | CTRL+o | Retrace your movement in file in backwards
 | CTRL+p | Select previous word and jump to previous (Plugin: vim-multiple-cursors)
 | CTRL+s | Save current file, mapping of :w!
@@ -622,9 +624,9 @@ http://media.vimcasts.org/videos/29/alignment.ogv
 ## Plugin: [vim-surround](https://github.com/tpope/vim-surround)
 |     Key    |  Function |
 |:----------:|:----------|
-| cs<SRC-SYM><DST-SYM> | Change surround from SRC symbol to DST symbol
-| ys<OBJ><SYM>         | Add surround for the OBJ with SYM
-| ds<SYM>              | Delete surround, <SYM> is the symbol of surround
+| cs\<SRC-SYM\>\<DST-SYM\> | Change surround from SRC symbol to DST symbol
+| ys\<OBJ\>\<SYM\>         | Add surround for the OBJ with SYM
+| ds\<SYM\>                | Delete surround, <SYM> is the symbol of surround
 NOTE: the repeat `.` works for vim-surround.
 
 # Color Scheme
