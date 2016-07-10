@@ -625,8 +625,8 @@ http://media.vimcasts.org/videos/29/alignment.ogv
 |     Key    |  Function |
 |:----------:|:----------|
 | cs\<SRC-SYM\>\<DST-SYM\> | Change surround from SRC symbol to DST symbol
-| ys\<OBJ\>\<SYM\>         | Add surround for the OBJ with SYM
-| ds\<SYM\>                | Delete surround, <SYM> is the symbol of surround
+| ys\<object\>\<SYM\>      | Add surround for the vim object with SYM
+| ds\<SYM\>                | Delete surround, \<SYM\> is the symbol of surround
 NOTE: the repeat `.` works for vim-surround.
 
 # Color Scheme
