@@ -58,6 +58,8 @@ Plugin 'mhinz/vim-grepper'
 Plugin 'wellle/targets.vim'
 Plugin 'michaeljsmith/vim-indent-object'
 Plugin 'xolox/vim-session'
+Plugin 'yssl/QFEnter'
+Plugin 'tpope/vim-unimpaired'
 
 Plugin 'tpope/vim-repeat'
 "Plugin 'Shougo/neocomplete.vim'
@@ -280,6 +282,10 @@ vnoremap <Leader>rc y:%s/<C-r>"/
 
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
 noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
+
+" In the quickfix window, <CR> is used to jump to the error under the
+" cursor, so undefine the mapping there.
+autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>:cw<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => File encoding
@@ -1087,6 +1093,15 @@ let g:UltiSnipsExpandTrigger="<Insert>"
 let g:UltiSnipsJumpForwardTrigger="<c-n>"
 let g:UltiSnipsJumpBackwardTrigger="<c-l>"
 " let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: QFEnter
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:qfenter_open_map =  ['<CR>', '<Leader>xo']
+let g:qfenter_vopen_map = ['<Leader>xv']
+let g:qfenter_hopen_map = ['<Leader>xh']
+let g:qfenter_topen_map = ['<Leader>xt']
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions

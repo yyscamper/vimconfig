@@ -436,12 +436,17 @@ Use vim-buffergator instead.
 | ,*  | Quick search the word under cursor
 
 ### vim-grepper Result Window Only
+NOTE: This key mapping is generic for all quickfix window, the functionality is contained in plugins [vim-unimpaired](https://github.com/tpope/vim-unimpaired) & [QFEnter](https://github.com/yssl/QFEnter).
 |     Key    |  Function |
 |:----------:|:----------|
-| gf         | Edit existing file under cursor in same window
-| \<C-W\>f     | Edit existing file under cursor in split window
-| \<C-W\>\<C-F\> | Edit existing file under cursor in split window
-| \<C-W\>gf    | Edit existing file under cursor in new tabpage
+| {Enter} or ,xo   | Open the result in previous focused window
+| {Enter}xv        | Open the result item in vertical split window
+| {Enter}xh        | Open the result item in horizontal split window
+| {Enter}xt        | Open the result item in new tab
+| :cnext or ]q     | Open the next result item
+| :cprevious or [q | Open the previous result item
+| :clast or ]Q     | Open the last result item
+| :cfirst or [Q    | Open the first result item
 
 ### Screenshot
 ![](https://github.com/mhinz/vim-grepper/blob/master/pictures/grepper-demo.gif)
