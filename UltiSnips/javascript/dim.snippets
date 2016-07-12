@@ -1,0 +1,39 @@
+global !p
+def upperFirst(text):
+    if len(text) > 1:
+        return text[0].upper() + text[1:]
+    elif len(text) == 1:
+        return text.upper()
+    else:
+        return text;
+endglobal
+
+snippet dim "RackHD di module code"
+// Copyright `date +%Y`, EMC, Inc.
+
+'use strict';
+
+var di = require('di');
+
+module.exports = ${1:name}Factory;
+
+di.annotate($1Factory, new di.Provide('${2:`!p snip.rv=upperFirst(t[1])`}');
+di.annotate($1Factory, new di.Inject(
+	'Logger',
+	'_',
+	'Promise'
+));
+
+function $1Factory(
+	logger,
+	_,
+	Promise
+) {
+	var logger = Logger.initialize($1Factory);
+
+	function $2() {
+	}
+
+	return $2;
+}
+endsnippet

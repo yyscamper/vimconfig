@@ -503,7 +503,7 @@ nmap <F7> :!./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --r
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>n :NERDTreeToggle<CR>
+map <leader>n :NERDTreeToggle<CR>:set number<CR>:set relativenumber<CR>
 let NERDTreeHighlightCursorline=1
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '^\.svn$', '^\.hg$' ]
 "close vim if the only window left open is a NERDTree
@@ -516,8 +516,8 @@ let g:NERDTreeWinPos = 'right'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree-tab
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <Leader>n <plug>NERDTreeTabsToggle<CR>
-map <F5> <plug>NERDTreeTabsToggle<CR>
+map <Leader>n <plug>NERDTreeTabsToggle<CR>:set number<CR>:set relativenumber<CR>
+map <F5> <plug>NERDTreeTabsToggle<CR>:set number<CR>:set relativenumber<CR>
 let g:nerdtree_tabs_synchronize_view=0
 let g:nerdtree_tabs_synchronize_focus=0
 let g:nerdtree_tabs_open_on_console_startup=0
@@ -770,13 +770,14 @@ nmap <leader>d<space> :StripWhitespace<CR>
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugin: powerline
+" => Plugin: airline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set t_Co=256
 set laststatus=2
 let g:Powerline_symbols = 'fancy'
 set fillchars+=stl:\ ,stlnc:\
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: YouCompleteMe

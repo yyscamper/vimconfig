@@ -1,0 +1,22 @@
+global !p
+def upperFirst(text):
+    if len(text) > 1:
+        return text[0].upper() + text[1:]
+    elif len(text) == 1:
+        return text.upper()
+    else:
+        return text;
+endglobal
+
+snippet emccopy "EMC Copyright"
+// Copyright `date +%Y`, EMC, Inc.
+endsnippet
+
+snippet di "RackHD DI"
+di.annotate(${1:factoryFunction}, new di.Provide('${2:injectableName}');
+di.annotate($1, new di.Inject(
+	'Logger',
+	'_',
+	'Promise'
+));
+endsnippet

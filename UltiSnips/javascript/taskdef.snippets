@@ -1,0 +1,14 @@
+snippet taskdef "RackHD task definition"
+// Copyright `date +%Y`, EMC, Inc.
+
+'use strict';
+
+module.exports = {
+	friendlyName: '${1:friendlyName}',
+	injectableName: 'Task.${2:taskInjectableName}',
+	implementsTask: 'Task.Base.${3:baseTaskName}',
+	schemaRef: '${4:schemaReference}',
+	options: {$0},
+	properties: {}
+};
+endsnippet

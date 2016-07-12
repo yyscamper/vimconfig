@@ -1,0 +1,25 @@
+snippet taskschema "RackHD task definition"
+{
+	"$schema": "rackhd/schemas/v1/task-schema",
+	"copyright": "Copyright `date +%Y`, EMC, Inc.",
+	"title": "$1",
+	"description": "$2",
+	"describeJob": "${3:Job.}",
+	"definitions": {
+		"Option1": {
+			"type": "string"
+		}
+	},
+	"allOf": [
+		{ "$ref": "common#/definitions/Options" },
+		{
+			"type": "object",
+			"properties": {
+				"option1": {
+					"$ref": "#/definitions/Option1",
+				}
+			}
+		}
+	]
+}
+endsnippet
