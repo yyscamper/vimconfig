@@ -105,6 +105,7 @@ Plugin 'elzr/vim-json'
 " Plugin 'vim-scripts/Nibble'
 " Plugin 'vim-scripts/genutils'
 Plugin 'powerman/vim-plugin-AnsiEsc'
+Plugin 'autoclose'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -408,7 +409,7 @@ map <leader>wk :wincmd k<cr>
 map <leader>wl :wincmd l<cr>
 map <leader>wq :wincmd q<cr>
 map <leader>ww :wincmd w<cr>
-nnoremap ww :wincmd w<cr>
+" nnoremap ww :wincmd w<cr>
 
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <leader>wz :ZoomToggle<CR>
@@ -808,6 +809,11 @@ let g:airline#extensions#tabline#enabled = 1
 let g:vim_json_syntax_conceal = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-session
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:session_autoload = 'no'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-autoformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <C-y> :Autoformat<CR>
@@ -946,7 +952,7 @@ let g:syntastic_sh_checkers = ['bashate']
 let g:syntastic_c_checkers = ['gcc']
 let g:syntastic_cpp_checkers = ['gcc']
 let g:syntastic_html_checkers = ['jshint', 'w3']
-let g:syntastic_markdown_checkers = ['mdl']
+" let g:syntastic_markdown_checkers = ['mdl']
 let g:syntastic_vim_checkers = ['vimlint']
 let g:syntastic_xml_checkers = ['xmllint']
 let g:syntastic_yaml_checkers = ['jsyaml']

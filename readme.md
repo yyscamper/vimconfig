@@ -4,12 +4,16 @@ This is my vim configuration file, you can copy it as you well.
 # Installation
 1.Get local copy
 ```
+cd ~
 git clone https://github.com/yyscamper/vimconfig.git
 ```
 
-2.Link vim config file
+2.Link vim config file, color file and UnitSnips file
 ```
-ln -s vimconfig/vimrc ~/.vimrc
+ln -s ~/vimconfig/vimrc ~/.vimrc
+ln -s ~/vimconfig/color ~/color
+ln -s ~/vimconfig/UltiSnips ~/UltiSnips
+
 ```
 
 3.Install [Vundle](https://github.com/gmarik/Vundle.vim)
@@ -25,7 +29,6 @@ Open Vim, and type *:PluginInstall*, wait until all plugins are installed.
 - System dependancy
 ```
 sudo apt-get install silversearcher-ag  # This is what vim-ag needs
-sudo apt-get install buiuld-essential cmake pyton-dev    #This is plugin 'YCM' needs
 ```
 - Javscript
 ```
@@ -41,18 +44,17 @@ pip install pylint      # you need install python first
 
 6.Compile YouCompleteMe
 
-Follows the guide in <http://valloric.github.io/YouCompleteMe/>, this will take very long time (around 1 hour in my PC).
+Follows the guide in <http://valloric.github.io/YouCompleteMe/>, this will take very long time (around 1 hour in my PC). For short, the steps for setting up javascript auto completion are:
+    cd ~/.vim/bundle/YouCompleteMe
+    ./install.py --tern-completer
 
-7.Install for [command-t](https://github.com/wincent/command-t)
-
-Check https://gist.github.com/jwieringa/1348303 for compiling a vim with ruby support
-
-```
-sudo apt-get install ruby-full
-cd ~/.vim/bundle/command-t/ruby/command-t
-ruby extconf.rb
-make
-```
+You will also need to setup a tern config file if you used --tern-complete in above step.
+* Download tern-config
+    cd ~/ # use home directory by default.
+    git clone https://github.com/yyscamper/dotfiles.git
+* Copy tern files
+    cp ~/dotfiles/files/tern-config ~/.tern-config
+    # Need to change paths inside .tern-config if dotfiles repo is not under home directory
 
 # Vim Object
 
@@ -643,6 +645,16 @@ I prefer to the [solarized](https://github.com/altercation/vim-colors-solarized)
 To support the vim-airline or vim-powerline, the terminal font must be patched. You don't need to patch by yourself, you just need to download and install the patched font from following address:
 - <https://github.com/eugeii/consolas-powerline-vim> (Consolas is my favoriate)
 - <https://github.com/powerline/fonts>
+
+If you are using putty in Windows, do following steps:
+* Download CONSOLA-Powerline.ttf from https://github.com/eugeii/consolas-powerline-vim
+* Install CONSOLA-Powerline.ttf by double clicking it.
+* Open putty, goto 'Window->Appearance'.
+* Click Change button in 'Font settings' tab, and set font to 'Consolas for Powerline'
+* Go to 'Window/Translation' and set 'charactor set' to 'UTF-8'.
+* Go to 'Session' and click 'Default Settings' in 'Saved Sessions' and click save to save the settings.
+
+You will be all set after restart putty.
 
 # References
 * [Amir Salihefendic's vimrc](http://amix.dk/vim/vimrc.html)
