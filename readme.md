@@ -11,8 +11,8 @@ git clone https://github.com/yyscamper/vimconfig.git
 2.Link vim config file, color file and UnitSnips file
 ```
 ln -s ~/vimconfig/vimrc ~/.vimrc
-ln -s ~/vimconfig/color ~/color
-ln -s ~/vimconfig/UltiSnips ~/UltiSnips
+ln -s ~/vimconfig/color ~/.vim/colors
+ln -s ~/vimconfig/UltiSnips ~/.vim/UltiSnips
 
 ```
 
