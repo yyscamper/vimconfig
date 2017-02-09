@@ -172,6 +172,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | ,w | Fast saving, same as :w!<CR> |
 | ,q | Quickly close current window, same as :q<CR> |
 | ,v | Select block |
+| ,z | Toggle line number |
 
 ## ` Hotkey
 |     Key    |  Function |

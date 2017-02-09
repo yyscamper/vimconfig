@@ -503,7 +503,7 @@ nmap <F7> :!./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --r
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>n :NERDTreeToggle<CR>:set number<CR>:set relativenumber<CR>
+map <leader>z :set number!<CR>:set relativenumber!<CR>
 let NERDTreeHighlightCursorline=1
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '^\.svn$', '^\.hg$' ]
 "close vim if the only window left open is a NERDTree
