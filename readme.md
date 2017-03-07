@@ -437,7 +437,9 @@ Use vim-buffergator instead.
 | ,*  | Quick search the word under cursor
 
 ### vim-grepper Result Window Only
-NOTE: This key mapping is generic for all quickfix window, the functionality is contained in plugins [vim-unimpaired](https://github.com/tpope/vim-unimpaired) & [QFEnter](https://github.com/yssl/QFEnter).
+
+NOTE: This key mapping is generic for all quickfix window, the functionality is contained in plugins [vim-unimpaired](https://github.com/tpope/vim-unimpaired) \& [QFEnter](https://github.com/yssl/QFEnter).
+
 |     Key    |  Function |
 |:----------:|:----------|
 | {Enter} or ,xo   | Open the result in previous focused window
