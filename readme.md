@@ -150,10 +150,10 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | CTRL+d | Scroll down half a page
 | CTRL+e | Go to the end of line (only in INSERT mode)
 | CTRL+f | Prompt in commandline to use CtrlSF to search
-| CTRL+i | Retrace you movement in file in forwards
-| CTRL+l | Jump to the previous snippet trigger (Plugin: UltiSnips)
+| CTRL+i | Retrace you movement in file in forward
+| CTLR+j | Expand the snippet or jump to next snippet trigger (Plugin UltiSnips)
+| CTRL+k | Jump to the previous snippet trigger (Plugin: UltiSnips)
 | CTRL+m | Select current word and jump to next (Plugin:vim-multiple-cursors)
-| CTRL+n | Jump to the next snippet trigger (Plugin: UltiSnips)
 | CTRL+o | Retrace your movement in file in backwards
 | CTRL+p | Select previous word and jump to previous (Plugin: vim-multiple-cursors)
 | CTRL+s | Save current file, mapping of :w!
@@ -624,9 +624,8 @@ http://media.vimcasts.org/videos/29/alignment.ogv
 ## Plugin: [UltiSnips](https://github.com/SirVer/ultisnips)
 |     Key    |  Function |
 |:----------:|:----------|
-| INSERT | Insert snippet
-| CTRL+n | Jump to next trigger
-| CTRL+l | Jump to previous trigger
+| CTRL+j | Insert snippet or Jump to next trigger
+| CTRL+k | Jump to previous trigger
 ![](https://camo.githubusercontent.com/296aecf30e1607233814196db6bd3f5f47e70c73/68747470733a2f2f7261772e6769746875622e636f6d2f5369725665722f756c7469736e6970732f6d61737465722f646f632f64656d6f2e676966)
 
 ## Plugin: [vim-surround](https://github.com/tpope/vim-surround)
