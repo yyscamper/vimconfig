@@ -110,11 +110,15 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 ## Vim General
 |     Key    |  Function |
 |:----------:|:----------|
+| jk | Exit from insert mode (ESC is disabled by default) |
 | * | (visual mode)Search next for the current selection |
 | * | (normal mode) Keep search pattern at the center of the screen |
 | # | (visual mode) Search previous for  the current selection |
 | # | (normal mode) Keep search pattern at the center of the screen |
 | ; | Enter command line, same as : |
+| f{char}{char} | Input exact 2 chars, use vim-sneak to go the first occurance of input text |
+| F{char}{char} | Use backward comparing with f |
+| m | Jump to the middle of line
 | n | (normal mode) Keep search pattern at the center of the screen |
 | N | (normal mode) Keep search pattern at the center of the screen |
 | U | easier redo, same as Ctrl+r |
@@ -137,7 +141,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | F2  | Toggle Tagbar (Plugin: tagbar) |
 | F3  | Do Syntastic check |
 | F4  | Toggle Syntastic error window |
-| F5  | Toggle NERDTree (Plugin: NERDTree) |
+| F5  | AutoFormat source code (Plugin: vim-autoformat) |
 | F8  | Switch Color Scheme (Plugin: vim-colorscheme-switch) |
 | F10 | Quick run current file (plugin: quickrun) |
 | F11 | Toggle line number and indent line, useful when you copy screen |
@@ -171,6 +175,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | ,B | Close the buffer catalog (Plugin: buffergator)
 | ,n | Toggle NERDTree |
 | ,r | Quick run current file (plugin: quickrun) |
+| ,s | Replace the current word |
 | ,w | Fast saving, same as :w!<CR> |
 | ,q | Quickly close current window, same as :q<CR> |
 | ,v | Select block |
@@ -239,6 +244,41 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 | ,~m | Remove the windows ^M when the encoding gets messed up |
 | gV | Hight last inserted text |
 | ,rc | Replace the current word and all its occurrences |
+
+# Clipboard Related KeyMapping
+After enable the [vim-easyclip](https://github.com/svermeulen/vim-easyclip) plugin, a lot clipboard related functionality will be modified, below is the command list and their corresponding function:
+
+|     Key    |  Function |
+|:----------:|:----------|
+| d<motion> | Delete over the given motion and do not change clipboard
+| dd |  Delete the line and do not change clipboard
+| D  |  Delete from cursor to the end of the line and do not change clipboard
+| dD |  Delete the contents of line except the newline character (that is, make it blank) and do not change clipboard
+| x  |  Delete the character under cursor and do not change clipboard
+| s | - Delete the character under cursor then enter insert mode and do not change clipboard
+| S | Delete the line under cursor then enter insert mode and do not change clipboard
+| c<motion> | Enter insert mode over top the given area and do not change clipboard
+| cc | Enter insert mode over top the current line and do not change clipboard
+| C | Enter insert mode from cursor to the end of the line and do not change clipboard
+| p | Paste from specified register. Inserts after current line if text is multiline, after current character if text is non-multiline. Leaves cursor at end of pasted text.
+| P | Same as p except inserts text before current line/character
+| <leader>p | Same as p except does not auto-format text. This is only relevant if the auto-format option is enabled
+| <leader>P | Same as P except does not auto-format text. This is only relevant if the auto-format option is enabled
+| gp | Same as p but preserves the current cursor position
+| gP | Same as P but preserves the current cursor position
+| g<leader>P | Same as <leader>P but preserves the current cursor position
+| g<leader>p | Same as <leader>p but preserves the current cursor position
+| m<motion> | Delete over the given motion and copy text to clipboard
+| mm | Delete the current line and copy text to clipboard
+| \<CTRL-P\> | Rotate the previous paste forward in yank buffer. Note that this binding will only work if executed immediately after a paste
+| \<CTRL-N\> | Rotate the previous paste backward in yank buffer. Note that this binding will only work if executed immediately after a paste
+| [y | Go backward in the yank buffer. This can be executed at any time to modify order of yanks in the yank buffer (though I would recommend just using <CTRL-P> instead)
+| ]y | Go forward in the yank buffer. This can be executed at any time to modify order of yanks in the yank buffer (though I would recommend just using <CTRL-N> instead)
+| Y | Copy text from cursor position to the end of line to the clipboard
+| s<motion> | Substitute over the given motion with specified register (or default register if unspecified).
+| ss | Substitute over the current line with specified register (or default register if unspecified). 
+| gs | Same as s but preserves the current cursor position.
+
 
 # Plugin
 
@@ -326,7 +366,7 @@ Plugin 'powerman/vim-plugin-AnsiEsc'
 ### Global Key Mapping
 |     Key    |  Function |
 |:----------:|:----------|
-| *F5* or ,n | Toggle NERDTree
+| ,n | Toggle NERDTree
 
 ### NERDTree Window Only Key Mapping
 |     Key    |  Function |

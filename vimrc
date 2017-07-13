@@ -36,7 +36,7 @@ Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 " General plugins
 "Plugin 'Lokaltog/powerline'
 "Plugin 'ashwin/vim-powerline'
-Plugin 'bling/vim-airline'
+"Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
@@ -45,7 +45,7 @@ Plugin 'jeetsukumaran/vim-buffergator'
 "Plugin 'rking/ag.vim'
 Plugin 'dyng/ctrlsf.vim'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'kshenoy/vim-signature'
+" Plugin 'kshenoy/vim-signature'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'terryma/vim-expand-region'
 Plugin 'easymotion/vim-easymotion'
@@ -57,18 +57,20 @@ Plugin 'jasoncodes/ctrlp-modified.vim'
 Plugin 'mhinz/vim-grepper'
 Plugin 'wellle/targets.vim'
 Plugin 'michaeljsmith/vim-indent-object'
-Plugin 'xolox/vim-session'
+" Plugin 'xolox/vim-session'
 Plugin 'yssl/QFEnter'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'justinmk/vim-sneak'
+Plugin 'svermeulen/vim-easyclip'
 
 Plugin 'tpope/vim-repeat'
-"Plugin 'Shougo/neocomplete.vim'
+Plugin 'Shougo/neocomplete.vim'
 "Plugin 'Shougo/neosnippet.vim'
 "Plugin 'Shougo/neosnippet-snippets'
 "Plugin 'Shougo/vimshell.vim'
 "Plugin 'Shougo/vimproc.vim'
 Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+" Plugin 'honza/vim-snippets'
 
 " Common plugins for source codes
 Plugin 'scrooloose/syntastic'
@@ -85,6 +87,7 @@ Plugin 'thinca/vim-quickrun'
 Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'tpope/vim-fugitive'
+Plugin 'Raimondi/delimitMate'
 
 " Javascript/Node.js
 Plugin 'moll/vim-node'
@@ -101,6 +104,9 @@ Plugin 'klen/python-mode'
 " JSON
 Plugin 'elzr/vim-json'
 
+" golang
+Plugin 'fatih/vim-go'
+
 " Misc
 " Plugin 'vim-scripts/Nibble'
 " Plugin 'vim-scripts/genutils'
@@ -114,6 +120,13 @@ filetype plugin indent on    " required
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" during insert mode, remap the ESC to avoid long finger keystroke
+" `^ is to let the cursor doesn't when back to normal mode
+inoremap jk <Esc>`^
+" imap <Esc> <Esc>`^
+" unmap Esc so that force me to use the jk
+inoremap <Esc> <Nop>
+
 " Sets how many lines of history VIM has to remember
 set history=700
 
@@ -168,6 +181,9 @@ nnoremap 'b <C-O>
 " move to previous cursor position
 nnoremap 'f <C-I>
 
+" start to replace the current word
+nnoremap <leader>s :%s/<C-r><C-w>/
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -210,7 +226,7 @@ set showmatch
 set mat=2
 
 " Configure backspace so it acts as it should act
-"set backspace=eol,start,indent
+set backspace=eol,start,indent
 "set whichwrap+=<,>,h,l
 
 " Set how many lines will be kept visible when move cursor up and down
@@ -242,15 +258,18 @@ set si "Smart indent
 set nowrap
 
 set number          " show line numbers
-set relativenumber  " show relative numbers
+" set relativenumber  " show relative numbers
 
 " highlight current line
 set cursorline
+" set cursorcolumn
 
 " set foldenable
 
 nnoremap B ^
 nnoremap E $
+" jump to the middle of line
+" nnoremap m call cursor(0, len(getline('.'))/2)
 
 nnoremap gV `[v`]   " highlight last inserted text
 
@@ -291,13 +310,12 @@ autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>:cw<CR>
 " => File encoding
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Try following encoding in following defined order in auto mode
-set fileencodings=utf-8,gbk,utf-16,big5,latin1
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1
 set fileencoding=utf-8
 
 " Set new file's encoding
 set encoding=utf-8
-set termencoding=
-
+" set termencoding=
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
@@ -345,6 +363,8 @@ let g:solarized_visibility="normal"
 set t_Co=256
 
 colorscheme solarized
+
+set guifont=Monaco\ for\ Powerline:h14
 
 "highlight Normal ctermfg=grey ctermbg=base03
 
@@ -408,7 +428,7 @@ map <leader>wk :wincmd k<cr>
 map <leader>wl :wincmd l<cr>
 map <leader>wq :wincmd q<cr>
 map <leader>ww :wincmd w<cr>
-nnoremap ww :wincmd w<cr>
+" nnoremap ww :wincmd w<cr>
 
 command! ZoomToggle call s:ZoomToggle()
 nnoremap <silent> <leader>wz :ZoomToggle<CR>
@@ -470,8 +490,8 @@ vmap <leader>lk :m'<-2<cr>`>my`<mzgv`yo`z
 " autocmd BufWrite *.java :call DeleteTrailingWS()
 " autocmd BufWrite *.xml :call DeleteTrailingWS()
 
-set list
-set listchars=tab:›\ ,extends:#,nbsp:. " Highlight problematic whitespace
+" set list
+" set listchars=tab:›\ ,extends:#,nbsp:. " Highlight problematic whitespace
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-colorscheme-swicher
@@ -512,12 +532,12 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 let g:NERDTreeMapOpenSplit = 's'
 let g:NERDTreeMapOpenVSplit = 'v'
 let g:NERDTreeWinPos = 'right'
+let NERDTreeChDirMode = 2
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree-tab
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <Leader>n <plug>NERDTreeTabsToggle<CR>:set number<CR>:set relativenumber<CR>
-map <F5> <plug>NERDTreeTabsToggle<CR>:set number<CR>:set relativenumber<CR>
+map <Leader>n <plug>NERDTreeTabsToggle<CR>
 let g:nerdtree_tabs_synchronize_view=0
 let g:nerdtree_tabs_synchronize_focus=0
 let g:nerdtree_tabs_open_on_console_startup=0
@@ -553,28 +573,28 @@ nmap <leader>pb :CtrlPBuffer<CR>
 map <C-p>b :CtrlPBuffer<CR>
 
 let g:ctrlp_custom_ignore = {
-    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
-    \ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.o$\|\.obj$\|\.d$' }
+\ 'dir':  '\.git$\|\.hg$\|\.svn$',
+\ 'file': '\.exe$\|\.so$\|\.dll$\|\.pyc$\|\.o$\|\.obj$\|\.d$' }
 
 " On Windows use "dir" as fallback command.
 if executable('ag')
-    let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
+let s:ctrlp_fallback = 'ag %s --nocolor -l -g ""'
 elseif executable('ack-grep')
-    let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
+let s:ctrlp_fallback = 'ack-grep %s --nocolor -f'
 elseif executable('ack')
-    let s:ctrlp_fallback = 'ack %s --nocolor -f'
+let s:ctrlp_fallback = 'ack %s --nocolor -f'
 else
-    let s:ctrlp_fallback = 'find %s -type f'
+let s:ctrlp_fallback = 'find %s -type f'
 endif
 if exists("g:ctrlp_user_command")
-    unlet g:ctrlp_user_command
+unlet g:ctrlp_user_command
 endif
 let g:ctrlp_user_command = {
-    \ 'types': {
-        \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
-        \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-    \ },
-    \ 'fallback': s:ctrlp_fallback
+\ 'types': {
+    \ 1: ['.git', 'cd %s && git ls-files . --cached --exclude-standard --others'],
+    \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+\ },
+\ 'fallback': s:ctrlp_fallback
 \ }
 
 " CtrlP extensions
@@ -641,16 +661,16 @@ let g:ctrlsf_position = 'bottom'
 " Note: cannot use <CR> or <C-m> for open
 " Use : <sapce> or <tab>
 let g:ctrlsf_mapping = {
-    \ "open"  : "<Enter>",
-    \ "openb" : "O",
-    \ "tab"   : "t",
-    \ "tabb"  : "T",
-    \ "prevw" : "p",
-    \ "quit"  : "q",
-    \ "next"  : "n",
-    \ "prev"  : "N",
-    \ "pquit" : "q",
-    \ }
+\ "open"  : "<Enter>",
+\ "openb" : "O",
+\ "tab"   : "t",
+\ "tabb"  : "T",
+\ "prevw" : "p",
+\ "quit"  : "q",
+\ "next"  : "n",
+\ "prev"  : "N",
+\ "pquit" : "q",
+\ }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-signature
@@ -778,6 +798,7 @@ let g:Powerline_symbols = 'fancy'
 set fillchars+=stl:\ ,stlnc:\
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: YouCompleteMe
@@ -810,19 +831,22 @@ let g:vim_json_syntax_conceal = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-autoformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nmap <C-y> :Autoformat<CR>
+noremap <F5> :Autoformat<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-indent-guide
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:indent_guides_start_level = 2
 let g:indent_guides_guide_size = 1
-let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_enable_on_vim_startup = 0
 
-let g:indent_guides_auto_colors = 0
-autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=235
-autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
-
+if has("gui_running")
+    let g:indent_guides_auto_colors = 1
+else
+    let g:indent_guides_auto_colors = 0
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=red   ctermbg=234
+    autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=green ctermbg=235
+endif
 :noremap <F11> :IndentGuidesToggle<CR>:set number!<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -897,34 +921,35 @@ nnoremap <leader>gd :Gdiff<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:tagbar_iconchars = ['▸', '▾']
 let g:tagbar_foldlevel = 4
+let g:tagbar_width = 32
 
 " let g:tagbar_type_javascript = {
 "             \ 'ctagsbin': 'jsctags'
 "             \}
 if !exists('g:tagbar_javascript_ctags_bin')
-    let g:tagbar_javascript_ctags_bin = 'esctags'
+let g:tagbar_javascript_ctags_bin = 'esctags'
 endif
 
 if !exists('g:tagbar_javascript_ctags_memory_limit')
-    let g:tagbar_javascript_ctags_memory_limit = '128M'
+let g:tagbar_javascript_ctags_memory_limit = '128M'
 endif
 
 let g:tagbar_type_javascript = {
-    \ 'ctagsbin'  : g:tagbar_javascript_ctags_bin,
-    \ 'ctagsargs' : '--memory="' . tagbar_javascript_ctags_memory_limit . '" -f -',
-    \ 'kinds'     : [
-        \ 'a:Parameters:0',
-        \ 'v:Variables:0:0',
-        \ 'p:Propertes:0:0',
-        \ 'c:Context:1:0'
-    \ ],
-    \ 'sro'        : '::',
-    \ 'kind2scope' : {
-        \ 'c' : 'context',
-    \ },
-    \ 'scope2kind' : {
-        \ 'context'  : 'c'
-    \ }
+\ 'ctagsbin'  : g:tagbar_javascript_ctags_bin,
+\ 'ctagsargs' : '--memory="' . tagbar_javascript_ctags_memory_limit . '" -f -',
+\ 'kinds'     : [
+    \ 'a:Parameters:0',
+    \ 'v:Variables:0:0',
+    \ 'p:Propertes:0:0',
+    \ 'c:Context:1:0'
+\ ],
+\ 'sro'        : '::',
+\ 'kind2scope' : {
+    \ 'c' : 'context',
+\ },
+\ 'scope2kind' : {
+    \ 'context'  : 'c'
+\ }
 \ }
 
 " Map F2 to toggle the tag bar
@@ -933,6 +958,9 @@ nmap <F2> :TagbarToggle<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: Syntastic
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:syntastic_go_checkers = ['go', 'gofmt', 'golint', 'gometalinter']
+let g:syntastic_go_gometalinter_args = "--fast --disable=gocyclo"
+
 let g:syntastic_javascript_checkers = ['jshint']
 let g:syntastic_javascript_jshint_args = "-c ~/.jshintrc"
 
@@ -950,6 +978,7 @@ let g:syntastic_markdown_checkers = ['mdl']
 let g:syntastic_vim_checkers = ['vimlint']
 let g:syntastic_xml_checkers = ['xmllint']
 let g:syntastic_yaml_checkers = ['jsyaml']
+let g:syntastic_zsh_checkers = ['zsh']
 
 "set statusline+=%#warningmsg#
 "set statusline+=%{SyntasticStatuslineFlag()}
@@ -969,6 +998,19 @@ noremap <F4> ::SyntasticReset<CR>
 
 noremap <leader>sn :lnext<CR>
 noremap <leader>sp :lprevious<CR>
+
+
+"workaround for the redraw problem that caused by syntastic
+"  force  a :redraw! on "events" that scramble the screen with
+"  syntax highlighting enabled.
+" see https://github.com/vim-syntastic/syntastic/issues/822
+let g:syntastic_full_redraws=1
+set ttyfast
+au FileWritePost * :redraw!
+au TermResponse * :redraw!
+au TextChanged * :redraw!
+au QuickFixCmdPre * :redraw!
+au QuickFixCmdPost * :redraw!
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: python-mode
@@ -1021,20 +1063,20 @@ map <F10> :QuickRun<CR>
 " => Plugin: Rainbow Parentheses
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:rbpt_colorpairs = [
-    \ ['brown',       'RoyalBlue3'],
-    \ ['darkgray',    'DarkOrchid3'],
-    \ ['darkgreen',   'firebrick3'],
-    \ ['darkcyan',    'RoyalBlue3'],
-    \ ['darkred',     'SeaGreen3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['brown',       'firebrick3'],
-    \ ['gray',        'RoyalBlue3'],
-    \ ['darkmagenta', 'DarkOrchid3'],
-    \ ['darkgreen',   'RoyalBlue3'],
-    \ ['darkcyan',    'SeaGreen3'],
-    \ ['darkred',     'DarkOrchid3'],
-    \ ['red',         'firebrick3'],
-    \ ]
+\ ['brown',       'RoyalBlue3'],
+\ ['darkgray',    'DarkOrchid3'],
+\ ['darkgreen',   'firebrick3'],
+\ ['darkcyan',    'RoyalBlue3'],
+\ ['darkred',     'SeaGreen3'],
+\ ['darkmagenta', 'DarkOrchid3'],
+\ ['brown',       'firebrick3'],
+\ ['gray',        'RoyalBlue3'],
+\ ['darkmagenta', 'DarkOrchid3'],
+\ ['darkgreen',   'RoyalBlue3'],
+\ ['darkcyan',    'SeaGreen3'],
+\ ['darkred',     'DarkOrchid3'],
+\ ['red',         'firebrick3'],
+\ ]
 
 let g:rbpt_max = 16
 let g:rbpt_loadcmd_toggle = 0
@@ -1089,10 +1131,10 @@ autocmd BufEnter *.log AnsiEsc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: ultisnips
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:UltiSnipsExpandTrigger="<Insert>"
+let g:UltiSnipsExpandTrigger="<c-l>"
 " let g:UltiSnipsListSnippets="<Leader>ul"
-let g:UltiSnipsJumpForwardTrigger="<c-n>"
-let g:UltiSnipsJumpBackwardTrigger="<c-l>"
+let g:UltiSnipsJumpForwardTrigger="<c-l>"
+let g:UltiSnipsJumpBackwardTrigger="<c-h>"
 " let g:UltiSnipsSnippetsDir="~/.vim/UltiSnips"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1103,6 +1145,27 @@ let g:qfenter_vopen_map = ['<Leader>xv']
 let g:qfenter_hopen_map = ['<Leader>xh']
 let g:qfenter_topen_map = ['<Leader>xt']
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-go
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" automatically format code and import missing package whiling go code
+let g:go_fmt_command = "goimports"
+let g:go_autodetect_gopath = 0
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-sneak
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:sneak#s_next = 1
+let g:sneak#label = 0
+map f <Plug>Sneak_s
+map F <Plug>Sneak_S
+map t <Plug>Sneak_t
+map T <Plug>Sneak_T
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-easyclip
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap M <Plug>MoveMotionEndOfLinePlug
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
@@ -1188,7 +1251,7 @@ endfunc
 
 function! AutoSetFileLineLimit()
     " python
-    if &filetype == 'python'
+    if &filetype == 'python' || &filetype == 'go'
         setlocal textwidth=128
         setlocal colorcolumn=+1
         let &colorcolumn="80,".join(range(129, 999), ",")
