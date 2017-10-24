@@ -29,9 +29,9 @@ Plugin 'xolox/vim-colorscheme-switcher'
 Plugin 'xolox/vim-misc'
 
 Plugin 'altercation/vim-colors-solarized'
-Plugin 'crusoexia/vim-monokai'
+" Plugin 'crusoexia/vim-monokai'
 " Plugin 'davidhalter/jedi-vim'
-Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
+" Plugin 'zenorocha/dracula-theme', {'rtp': 'vim/'}
 
 " General plugins
 "Plugin 'Lokaltog/powerline'
@@ -92,7 +92,7 @@ Plugin 'Raimondi/delimitMate'
 " Javascript/Node.js
 Plugin 'moll/vim-node'
 "Plugin 'walm/jshint.vim'
-Plugin 'marijnh/tern_for_vim'
+" Plugin 'marijnh/tern_for_vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'crusoexia/vim-javascript-lib'
 Plugin 'jiangmiao/simple-javascript-indenter'
@@ -100,6 +100,8 @@ Plugin 'ramitos/jsctags'
 
 " Python
 Plugin 'klen/python-mode'
+" Plugin 'davidhalter/jedi-vim'
+" Plugin 'jmcantrell/vim-virtualenv'
 
 " JSON
 Plugin 'elzr/vim-json'
@@ -111,6 +113,7 @@ Plugin 'fatih/vim-go'
 " Plugin 'vim-scripts/Nibble'
 " Plugin 'vim-scripts/genutils'
 Plugin 'powerman/vim-plugin-AnsiEsc'
+Plugin 'cespare/vim-toml'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -812,7 +815,8 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " let g:ycm_cache_omnifunc=0
 " let g:ycm_seed_identifiers_with_syntax=1
 " let g:ycm_key_invoke_completion = '<M-;>'
-" nmap <M-g> :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
+nnoremap gd :YcmCompleter GoToDefinitionElseDeclaration <C-R>=expand("<cword>")<CR><CR>
+
 "
 " " Enable omni completion.
 " autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -822,6 +826,7 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 " autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 " autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 " autocmd FileType haskell setlocal omnifunc=necoghc#omnifunc
+let g:ycm_python_binary_path = 'python'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-json
@@ -1047,6 +1052,17 @@ let g:pymode_syntax_space_errors = g:pymode_syntax_all
 let g:pymode_lint = 0
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: jedi-vim
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:jedi#goto_command = "go"
+let g:jedi#goto_assignments_command = "ga"
+let g:jedi#goto_definitions_command = "gd"
+let g:jedi#documentation_command = "K"
+let g:jedi#usages_command = "gn"
+let g:jedi#completions_command = "<C-Space>"
+let g:jedi#rename_command = "gr"
+ 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: quickrun
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:quickrun_config = {
@@ -1126,7 +1142,7 @@ let g:hound_repos="*"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: AnsiEsc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufEnter *.log AnsiEsc
+" autocmd BufEnter *.log AnsiEsc
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: ultisnips
