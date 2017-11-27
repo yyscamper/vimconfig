@@ -36,7 +36,7 @@ Plugin 'altercation/vim-colors-solarized'
 " General plugins
 "Plugin 'Lokaltog/powerline'
 "Plugin 'ashwin/vim-powerline'
-"Plugin 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
@@ -73,7 +73,8 @@ Plugin 'SirVer/ultisnips'
 " Plugin 'honza/vim-snippets'
 
 " Common plugins for source codes
-Plugin 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
+" Plugin 'scrooloose/syntastic'
 Plugin 'Chiel92/vim-autoformat'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'tComment'
@@ -837,6 +838,7 @@ let g:vim_json_syntax_conceal = 0
 " => Plugin: vim-autoformat
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 noremap <F5> :Autoformat<CR>
+" autocmd BufWrite *.py,*.js,*.json :Autoformat
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: vim-indent-guide
@@ -971,8 +973,8 @@ let g:syntastic_javascript_jshint_args = "-c ~/.jshintrc"
 
 let g:syntastic_json_checkers = ['jsonlint']
 
-let g:syntastic_python_checkers = ['pylint']
-let g:syntastic_python_pylint_args = "-c ~/.pylintrc"
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_python_pylint_args = ""
 
 let g:syntastic_sh_checkers = ['bashate']
 
@@ -993,7 +995,9 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
-let g:syntastic_enable_signs = 1
+let g:syntastic_enable_signs = 0
+let g:syntastic_echo_current_error = 0
+let g:syntastic_enable_ballons = 0
 
 " Manually do syntastic check
 noremap <F3> :SyntasticCheck<CR>:Errors<CR>
@@ -1004,18 +1008,31 @@ noremap <F4> ::SyntasticReset<CR>
 noremap <leader>sn :lnext<CR>
 noremap <leader>sp :lprevious<CR>
 
-
 "workaround for the redraw problem that caused by syntastic
 "  force  a :redraw! on "events" that scramble the screen with
 "  syntax highlighting enabled.
 " see https://github.com/vim-syntastic/syntastic/issues/822
 let g:syntastic_full_redraws=1
 set ttyfast
-au FileWritePost * :redraw!
-au TermResponse * :redraw!
-au TextChanged * :redraw!
-au QuickFixCmdPre * :redraw!
-au QuickFixCmdPost * :redraw!
+" au FileWritePost * :redraw!
+" au TermResponse * :redraw!
+" au TextChanged * :redraw!
+" au QuickFixCmdPre * :redraw!
+" au QuickFixCmdPost * :redraw!
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: ALE
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ale_linters = {
+\    'python': ['flake8'],
+\}
+let g:ale_sign_error = '>>'
+let g:ale_sign_warning = '--'
+let g:airline#extensions#ale#enabled = 0
+let g:ale_lint_on_save = 0
+let g:ale_open_list = 1
+let g:ale_enabled = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: python-mode
