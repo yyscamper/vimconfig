@@ -1,0 +1,990 @@
+snippet csvextract "CSV File Extractor"
+  extract:
+    driver: csve
+    dstname: csv
+    dsn: "/Users/mdt/${1:/data/}"
+    cmd:
+    -
+      name: args
+      type: raw
+      value:
+        headerRow: ${2:0}
+        firstRow: 1
+        lastRow: -1
+        columnNames:
+        - id
+        - name
+		selectColumns: ~
+		seperator: ','
+		charset: utf-8
+		skipErrorRow: false
+endsnippet
+
+snippet excelextract "Excel File Extractor"
+  extract:
+    driver: excele
+    dstname: excele
+    dsn: "/Users/mdt/${1}"
+    cmd:
+    -
+      name: args
+      type: raw
+      value:
+        sheetIndexes:
+        - 0
+		sheets:
+		- Sheet1
+		readAllSheets: false
+        firstRow: 1
+        lastRow: -1
+        headerRow: 0
+		columnNames: []
+		selectColumns: []
+		stopOnError: true
+		autoExpandRow: false
+		trimSpace: true
+		firstColumn: 0
+		lastColumn: -1
+		sheetNameAsColumn: ""
+endsnippet
+
+snippet sqlextract "SQL extractor"
+  extract:
+    driver: sqle
+    dstname: postgres
+    dsn: "${.Postgres.mdtStage}"
+    cmd:
+    -
+      name: full
+      type: string
+      value: "SELECT * FROM test"
+    -
+      name: from
+      type: single
+      value:
+      -
+        name: $1
+        type:
+        value:
+    -
+      name: select
+      type: single
+      value:
+      -
+        name: $2
+        type: string
+        value:
+      -
+        name: $3
+        type: string
+        value:
+    -
+      name: limit
+      type: int
+      value: 10
+    -
+      name: offset
+      type: int
+      value: 0
+    -
+      name: where
+      type: single
+      value:
+      -
+        name: source
+        type: string
+        value: "=${.source}"
+endsnippet
+
+snippet mongoextract "MongoDB extractor"
+  extract:
+    driver: mongoe
+    dstname: mongoDB
+    dsn: '${.Mongo.crawler}'
+    cmd:
+    -
+      name: $match
+      type: complex
+      value:
+      -
+        name: city
+        type: complex
+        value:
+        -
+          name: $eq
+          type: string
+          value: 'shanghai'
+    -
+      name: $project
+      type: single
+      value:
+      -
+        name: _id
+        type: int
+        value: 0
+      -
+        name: grid_id
+        type: int
+        value: 1
+      -
+        name: point_x
+        type: int
+        value: 1
+      -
+        name: point_y
+        type: int
+        value: 1
+    -
+      name: $limit
+      type: int
+      value: 10
+endsnippet
+
+snippet shapefileextractor "Shapefile Extractor"
+  extract:
+    driver: shapefile
+    dstname: shapefile
+    dsn: "/Users/mdt/${1}"
+    cmd:
+    -
+      name: encoding
+      type: string
+      value: gbk
+    -
+      name: srid
+      type: int
+      value: 4326
+	-
+	  name: geoColumnName
+	  type: string
+	  value: geometry
+	-
+	  name: srcCoordType
+	  type: string
+	  value: wgs84/bd09/gcj02/any
+	-
+	  name: dstCoordType
+	  type: string
+	  value: wgs84/bd09/gcj02/any
+	-
+	  name: limit
+	  type: int
+	  value: -1
+endsnippet
+
+snippet rowbuildercsv "Input CSV data from this file"
+  extract:
+    driver: rowbuilder_csv
+    dsn: demo
+    cmd:
+    -
+      name: args
+      type: raw
+      value:
+        column: "id,name,address"
+        data:
+          - "1001,Tom,Beijing"
+          - "1002,Mike, Chongqing"
+          - "2005,Suse, New York"
+endsnippet
+
+snippet fileextractor "File Extractor"
+  extract:
+    driver: filee
+    dsn: "/Users/mdt/$1"
+    cmd:
+    -
+      name: read_mode
+      type: string
+      value: full / linebyline
+endsnippet
+
+snippet sqlloader "SQL Loader v2"
+  load:
+    driver: sqlv2
+    dstname: postgres
+    dsn: ${.Postgres.mdtStage}
+    cmd:
+    -
+      name: arg
+      type: raw
+      value:
+        table: $1
+        mode: ${2: insert / update / upsert}
+        uniqueFields:
+		- name
+		- object_type
+		- city_id
+        skipBackup: true
+        backupMedia: csv
+        backupPath: '/Users/mdt/beep/backup/$3_`date +"%Y%m%d%H%M%S"`.csv'
+        preview: false
+        chunkSize: 100000
+		mergeFileds:
+		- extra
+		mergeStrategy: prefernew / preferold
+endsnippet
+
+snippet csvloader "CSV Loader"
+  load:
+    driver: csv
+    dsn:
+    cmd:
+    -
+      name: filePath
+      type: string
+      value: '<% now | format "2006-01-02" %>.csv'
+    -
+      name: encoding
+      type: string
+      value: "gbk"
+endsnippet
+
+snippet excelloader "Excel Loader"
+  load:
+    driver: excel
+    dsn:
+    cmd:
+    -
+      name: filePath
+      type: string
+      value: '/Users/mdt/etlconfig/data/test_excel_loader_<% now | date "2006-01-02" %>.xlsx'
+    -
+      name: sheetName
+      type: string
+      value: "Sheet1"
+endsnippet
+
+snippet mongoloader "MongoDB Loader"
+  load:
+    driver: mongol
+    dstname: mongoDB
+    dsn: '${.Mongo.crawler}|collection_name'
+    cmd:
+    -
+      name: bulk
+      type: string
+      value: enable / disable
+endsnippet
+
+snippet beepcsv "Beep workflow template with CSV as Extractor"
+step0:
+  extract:
+    driver: csve
+    dstname: csv
+    dsn: "/Users/mdt/${1:data/}"
+    cmd:
+    -
+      name: args
+      type: raw
+      value:
+        headerRow: ${2:0}
+        firstRow: 1
+        lastRow: -1
+        columnNames:
+        - id
+        - name
+		selectColumns: []
+		seperator: ','
+		charset: utf-8
+		skipErrorRow: false
+  transform:
+    driver: optimus
+    dstname: "optimus"
+    dsn:
+    cmd:
+    -
+	  name: config
+	  type: raw
+	  value:
+	    srcFmt: array
+	    dstFmt: array
+    -
+      name: typecast
+      type: single
+      value:
+      -
+        name: lat
+        type: string
+        value: float
+      -
+        name: lng
+        type: string
+        value: float
+  load:
+    driver: sqlv2
+    dstname: postgres
+    dsn: ${.Postgres.mdtStage}
+    cmd:
+    -
+      name: arg
+      type: raw
+      value:
+        table: ${3:test}
+        mode: insert
+        uniqueFields: ["name"]
+        skipBackup: true
+        backupMedia: csv
+        backupPath: '/Users/mdt/beep/backup/$3_`date +"%Y%m%d%H%M%S"`.csv'
+        preview: false
+        chunkSize: 1000000
+endsnippet
+
+snippet beepexcel "Beep workflow template with Excel as extractor"
+step0:
+  extract:
+    driver: excele
+    dstname: excele
+    dsn: "/Users/mdt/${1}"
+    cmd:
+    -
+      name: args
+      type: raw
+      value:
+        sheetIndexes:
+        - 0
+		sheets:
+		- Sheet1
+		readAllSheets: false
+        firstRow: 1
+        lastRow: -1
+        headerRow: 0
+		columnNames: []
+		selectColumns: []
+		stopOnError: true
+		autoExpandRow: false
+		trimSpace: true
+		firstColumn: 0
+		lastColumn: -1
+		sheetNameAsColumn: ""
+  transform:
+    driver: optimus
+    dstname: "optimus"
+    dsn:
+    cmd:
+    -
+	  name: config
+	  type: raw
+	  value:
+	    srcFmt: array
+	    dstFmt: array
+    -
+      name: typecast
+      type: single
+      value:
+      -
+        name: lat
+        type: string
+        value: float
+      -
+        name: lng
+        type: string
+        value: float
+  load:
+    driver: sqlv2
+    dstname: postgres
+    dsn: ${.Postgres.mdtStage}
+    cmd:
+    -
+      name: arg
+      type: raw
+      value:
+        table: ${2:test}
+        mode: insert
+        uniqueFields: ["name"]
+        skipBackup: true
+        backupMedia: csv
+        backupPath: '/Users/mdt/beep/backup/$2_`date +"%Y%m%d%H%M%S"`.csv'
+        preview: false
+        chunkSize: 1000000
+endsnippet
+
+snippet beepshapefile "Beep workflow from shapefile"
+step1:
+  extract:
+    driver: shapefile
+    dstname: shapefile
+    dsn: "/Users/mdt/$1"
+    cmd:
+    -
+      name: encoding
+      type: string
+      value: gbk
+    -
+      name: srid
+      type: int
+      value: 4326
+  transform:
+    driver: optimus
+    dstname: optimus
+    dsn:
+    cmd:
+    -
+	  name: config
+	  type: raw
+	  value:
+	    srcFmt: array
+	    dstFmt: array
+    -
+      name: dbquery
+      type: raw
+      value:
+        dataSource: ${.Postgres.mdtStage}
+        dbType: "postgres"
+        items:
+        -
+          column: "geometry"
+          funcTemplate: "SELECT ST_GeomFromGeoJSON('<%.geometry%>')"
+          returnType: "string"
+    -
+      name: packing-json
+      type: complex
+      value:
+      -
+        name: unpacked-src
+        type: list
+        value:
+        - name
+        - lng
+        - lat
+        - geometry
+        - user_id
+        - app_id
+        - city_id
+        - id
+        - object_type
+      -
+        name: dst
+        type: string
+        value: extra
+    -
+      name: insert-info
+      type: single
+      value:
+      -
+        name: city_id
+        type: int
+        value: 310100
+      -
+        name: source
+        type: int
+        value: 0
+      -
+        name: object_type
+        type: int
+        value: 900900
+    -
+      name: loadcolumns
+      type: list
+      value:
+      - id
+      - name
+      - geometry
+      - city_id
+      - source
+      - object_type
+      - extra
+  load:
+    driver: sqlv2
+    dstname: postgres
+    dsn: "${.Postgres.mdtStage}"
+    cmd:
+    -
+      name: arg
+      type: raw
+      value:
+        table: bd_region_special
+        mode: upsert
+        uniqueFields: ["name", "city_id", "object_type"]
+        skipBackup: true
+        backupMedia: csv
+        backupPath: '~/data/backup.csv'
+        preview: false
+endsnippet
+
+snippet beepsequence "Run multiple beep workflows"
+__stages__:
+  type: sequence
+  stages:
+    - stage2
+    - stage1
+
+__vars__:
+  city_id: 310300
+  source: mdt
+
+Vars:
+  city_id: 310301
+  source: mds
+
+stage1:
+  extract:
+    driver: rowbuilder_csv
+    dstname: demo
+    dsn: "${.postgres.mdtDevelop}"
+    cmd:
+    -
+      name: args
+      type: raw
+      value:
+        column: "id,name,address"
+        data:
+          - "1001,Tom,Beijing"
+          - "1002,Mike, Chongqing"
+          - "2005,Suse, New York"
+  transform:
+    driver: optimus
+    dstname:
+    dsn:
+    cmd:
+    -
+      name: insert-const
+      type: raw
+      value:
+        city_id: ${.city_id}
+        source: ${.source}
+  load:
+    driver: noop
+    dsn:
+    cmd:
+
+stage2:
+  extract:
+    driver: rowbuilder_csv
+    dstname: demo
+    dsn: demo
+    cmd:
+    -
+      name: args
+      type: raw
+      value:
+        column: "id,name,address"
+        data:
+          - "1004,Felix,Chongqing"
+          - "1112,Simon, Chongqing"
+          - "3459,Andrew,Xian"
+  transform:
+    driver: optimus
+    dstname:
+    dsn:
+    cmd:
+    -
+      name: insert-const
+      type: raw
+      value:
+        city_id: ${add .city_id 1}
+        source: ${.source}
+  load:
+    driver: noop
+    dsn:
+    cmd:
+endsnippet
+
+snippet optimus "Optimus transformer"
+  transform:
+    driver: optimus
+    dstname: "optimus"
+    dsn:
+    cmd:
+    -
+      name: src-format
+      type: string
+      value: array
+    -
+      name: dst-format
+      type: string
+      value: array
+endsnippet
+
+snippet srcfmt "Input data format for transform"
+    -
+      name: src-format
+      type: string
+      value: array
+endsnippet
+
+snippet dstfmt "Output data format after transform"
+    -
+      name: src-format
+      type: string
+      value: array
+endsnippet
+
+snippet pickempty "Convert values into empty (nil)"
+    -
+      name: pick-empty
+      type: raw
+      value:
+        emptyValues:
+		  - "\\N"
+		  - ""
+		columns:
+		  - name
+		ignoreCase: true
+endsnippet
+
+snippet nullprocessor "Assgin value if field is nil"
+    -
+      name: null-processor
+      type: raw
+      value:
+        name: default_name
+        object_type: 123456
+endsnippet
+
+snippet removecolumns "Remove columns from metadata"
+    -
+      name: remove-columns
+      type: raw
+      value:
+      - id
+endsnippet
+
+snippet typecast "Cast type for metadata"
+    -
+      name: typecast
+      type: single
+      value:
+      -
+        name: lat
+        type: string
+        value: float
+      -
+        name: lng
+        type: string
+        value: float
+      -
+        name: id
+        type: string
+        value: int
+      -
+        name: source
+        type: string
+        value: int
+      -
+        name: object_type
+        type: string
+        value: int
+      -
+        name: count
+        type: string
+        value: int
+      -
+        name: city_id
+        type: string
+        value: int
+endsnippet
+
+snippet dbquery "Query result from database"
+    -
+      name: dbquery
+      type: raw
+      value:
+        dataSource: "${.Postgres.mdtStage}"
+        dbType: "postgres"
+        items:
+        -
+          column: "geometry"
+          funcTemplate: "SELECT ST_SetSRID(ST_MakePoint(<%.lng%>, <%.lat%>), 4326)"
+          returnType: "string"
+          nilOnMiss: true
+endsnippet
+
+snippet geometrypoint "Make geometry point from lng and lat"
+    -
+      name: dbquery
+      type: raw
+      value:
+        dataSource: "${.Postgres.mdtStage}"
+        dbType: "postgres"
+        items:
+        -
+          column: "geometry"
+          funcTemplate: "SELECT ST_SetSRID(ST_MakePoint(<%.lng%>, <%.lat%>), 4326)"
+          returnType: "string"
+          nilOnMiss: true
+endsnippet
+
+snippet geojson "Convert GeoJSON to geometry"
+    -
+      name: dbquery
+      type: raw
+      value:
+        dataSource: "${.Postgres.mdtStage}"
+        dbType: "postgres"
+        items:
+        -
+          column: "geometry"
+          funcTemplate: "SELECT ST_GeomFromGeoJSON(<%.geometry%>)"
+          returnType: "string"
+          nilOnMiss: true
+endsnippet
+
+snippet packjson "Pack multiple fields into JSON field"
+    -
+      name: packing-json
+      type: complex
+      value:
+      -
+        name: unpacked-src
+        type: list
+        value:
+        - ${1:id}
+        - lng
+        - lat
+        - geometry
+		- city_id
+		- source
+		- name
+	    - object_type
+		- street_id
+		- regio_id
+      -
+        name: dst
+        type: string
+        value: extra
+endsnippet
+
+snippet insertinfo "Insert constant fields into each metadata"
+    -
+      name: insert-info
+      type: single
+      value:
+      -
+        name: city_id
+        type: int
+        value: 310100
+      -
+        name: source
+        type: int
+        value: 3
+      -
+        name: object_type
+        type: int
+        value: 3
+endsnippet
+
+snippet insertconst "Insert constant fields into each metadata"
+    -
+      name: insert-const
+      type: raw
+      value:
+	    city_id: 310100
+		source: 0
+endsnippet
+
+snippet loadcolumns "restrict the final columns out of transfomer"
+    -
+      name: loadcolumns
+      type: list
+      value:
+	  - id
+      - name
+      - lng
+      - lat
+      - geometry
+	  - object_type
+	  - source
+	  - extra
+	  - city_id
+endsnippet
+
+
+snippet config "Global configuration for transformer"
+    -
+      name: config
+      type: raw
+      value:
+        srcFormat: array
+        dstFormat: array
+		srcColumns: ~
+		dstColumns: ~
+		keepOriginColumnNames: false
+		keepOriginValue: false
+endsnippet
+
+snippet templateprocessor "Process metdata using template function"
+    -
+      name: template-processor
+      type: raw
+      value:
+      -
+        template: '<% .abc %>'
+        column: "value"
+endsnippet
+
+snippet serialid "Add Serial ID"
+
+endsnippet
+
+snippet filter "Only keep records that match with pattern"
+    -
+      name: filter
+      type: raw
+      value:
+        columnName: name
+        regex: "^prefix_*$"
+endsnippet
+
+snippet restrictcolumns "Only keep some columns, abandond all others"
+    -
+      name: restrict-columns
+      type: raw
+      value:
+      - city_id
+      - name
+endsnippet
+
+snippet columnrename "Rename column name"
+    -
+      name: column-rename
+      type: raw
+      value:
+        items:
+          unterm_chinese_formal: chinese_name_formal
+          official_name_en: english_name
+endsnippet
+
+snippet dbcache "Database cache"
+    -
+      name: dbcache
+      type: raw
+      value:
+        name: "algo_base_station_info"
+        dataSource: "${.Postgres.mdtStage}"
+        query: "SELECT id, district_id, grid_id, street_id FROM algo_base_station_info WHERE source=${.source} AND city_id=${.city_id} AND vendor_id IS NOT NULL"
+        id: "<% .id %>"
+endsnippet
+
+snippet dbcachelookup "Lookup database cache"
+    -
+      name: dbcache-lookup
+      type: raw
+      value:
+        srcColumn: "source_id"
+        dstColumn: "source_district_id"
+        cacheName: "algo_base_station_info"
+        cachePath: "district_id"
+endsnippet
+
+snippet dbexec "Execute Query in Database"
+    -
+      name: dbexec
+      type: raw
+      value:
+	    dataSource: "${.Postgres.mdtStage}"
+		sqls:
+		  - "SELECT * FROM test"
+		  - "SELECT * FROM source"
+endsnippet
+
+
+snippet removecolumns "Remove columns"
+    -
+      name: remove-columns
+      type: raw
+      value:
+        - _id
+endsnippet
+
+snippet env "Add environment variables"
+    -
+      name: env
+      type: raw
+      value:
+	    key1: "value1"
+		key2: 123
+endsnippet
+
+snippet columncopy "Copy columns"
+    -
+      name: column-copy
+      type: raw
+      value:
+	  -
+	    from: "name"
+		to: ["name1", "name2"]
+endsnippet
+
+snippet column-rename-regex "Rename columns that match with pattern"
+    -
+      name: column-rename-regex
+      type: raw
+      value:
+	    "^id[0-9]": id
+endsnippet
+
+snippet javascript "Run javascript code for metadata"
+    -
+      name: javascript
+      type: raw
+      value:
+	    code: "metadata.id = parseInt(metadata.city_id)*2 + 10000"
+		file: "a.js"
+endsnippet
+
+snippet lua "Run lua code for metadata"
+    -
+      name: lua
+      type: raw
+      value:
+        # file: /Users/mdt/tmp/tmp.lua
+        code: 'math.randomseed(os.time()); math.randomseed(math.random()); metadata["name"] = metadata["name"] .. "_demo"; metadata.id = tonumber(metadata["id"]) + 1; metadata["randid"]=math.random()'
+endsnippet
+
+snippet jsoncolumn "Process JSON fields using commands"
+    -
+      name: json-column
+      type: raw
+      value:
+        column: extra
+        commands:
+        -
+          name: column-rename
+          type: raw
+          value:
+            ignoreCase: true
+            trimSpace: true
+            items:
+              aDDress: 地址
+              TAG1: 标签1
+              OLD_OBJECT_TYPE: 老的标签
+        -
+          name: "insert-info"
+          type: single
+          value:
+          -
+            name: "foo"
+            type: string
+            value: "Hello"
+endsnippet
+
+snippet valuemapping "Map values from one to another"
+	-
+	  name: value-mapping
+	  type: raw
+	  value:
+	    column: name
+		dstColumn: new_name
+		items:
+		  from_value: to_value
+endsnippet
+
+snippet noopcmd "Noop command"
+	-
+	  name: noop
+	  type: raw
+	  value:
+endsnippet
+
+snippet matchcity "Assign official city id and city name"
+	-
+	  name: match-city
+	  type: raw
+	  value:
+	    srcColumn: city
+		dstColumnCityID: city_id
+		dstColumnFullCityName: full_city_name
+		dstColumnShortCityName: city_name
+		nilIfNotFound: false
+endsnippet
