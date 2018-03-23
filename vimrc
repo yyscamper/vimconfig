@@ -27,7 +27,7 @@ Plug 'gmarik/Vundle.vim'
 
 " Color scheme
 " Plug 'xolox/vim-colorscheme-switcher'
-Plug 'xolox/vim-misc'
+" Plug 'xolox/vim-misc'
 
 Plug 'altercation/vim-colors-solarized'
 " Plug 'crusoexia/vim-monokai'
@@ -36,7 +36,7 @@ Plug 'altercation/vim-colors-solarized'
 " General plugins
 "Plug 'Lokaltog/powerline'
 "Plug 'ashwin/vim-powerline'
-" Plug 'bling/vim-airline'
+Plug 'bling/vim-airline'
 " Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
 Plug 'scrooloose/nerdtree' 
 Plug 'jistr/vim-nerdtree-tabs'
@@ -827,6 +827,7 @@ set fillchars+=stl:\ ,stlnc:\
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline_section_error = '%{ALEGetStatusLine()}'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: YouCompleteMe
@@ -1054,22 +1055,34 @@ set ttyfast
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: ALE
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ale_enabled = 1
 let g:ale_linters = {
-            \    'python': ['pylint'],
+            \    'python': ['flake8'],
             \}
 let g:ale_fixers = {
             \    'python': ['yapf'],
             \}
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
-" let g:airline#extensions#ale#enabled = 0
+let g:ale_sign_error = '×'
+let g:ale_sign_warning = '∼'
+let g:airline#extensions#ale#enabled = 1
+let g:ale_statusline_format = ['× %d', '∼ %d', '√ OK']
 let g:ale_lint_on_save = 1
+let g:ale_lint_on_insert_leave = 1
 let g:ale_open_list = 0
-let g:ale_enabled = 1
-" let g:ale_lint_on_text_changed =  'never'
+let g:ale_lint_on_text_changed =  'never'
 let g:ale_lint_on_enter = 1
 let g:ale_emit_conflict_warnings = 1
 let g:ale_completion_enabled = 0
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+"普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
+nmap <leader>lk <Plug>(ale_previous_wrap)
+nmap <leader>lj <Plug>(ale_next_wrap)
+"<Leader>s触发/关闭语法检查
+nmap <Leader>ll :ALEToggle<CR>
+"<Leader>d查看错误或警告的详细信息
+nmap <Leader>ld :ALEDetail<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: python-mode
@@ -1248,6 +1261,12 @@ let g:deoplete#enable_at_startup = 1
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => misc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"整理python import
+autocmd FileType python nnoremap <Leader>im :!isort %<CR><CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Helper functions
