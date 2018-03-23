@@ -173,6 +173,7 @@ Download the cheat sheet from <http://coolshell.cn/articles/5479.html>
 |:----------:|:----------|
 | ,b | Open a window listing all buffers (Plugin: buffergator)
 | ,B | Close the buffer catalog (Plugin: buffergator)
+| ,f | Open ctrlp to search file (Plugin: ctrlp)|
 | ,n | Toggle NERDTree |
 | ,r | Quick run current file (plugin: quickrun) |
 | ,s | Replace the current word |
@@ -519,10 +520,10 @@ NOTE: This key mapping is generic for all quickfix window, the functionality is 
 ## Plugin: [ctrlp](https://github.com/kien/ctrlp.vim)
 |     Key    |  Function |
 |:----------:|:----------|
-| CTRL+p or ,p | Trigger ctrlp in file mode
-| CTRL+pr or ,pr | Trigger ctrlp in MRU mode (Most Recently Used)
-| CTRL+px or ,px | Trigger ctrlp in mixed mode
-| CTRL+pb or ,pb | Trigger ctrlp in buffer mode
+| CTRL+p or ,f | Trigger ctrlp in file mode
+| CTRL+pr or ,fr | Trigger ctrlp in MRU mode (Most Recently Used)
+| CTRL+px or ,fx | Trigger ctrlp in mixed mode
+| CTRL+pb or ,fb | Trigger ctrlp in buffer mode
 
 Inside ctrlp result window:
 

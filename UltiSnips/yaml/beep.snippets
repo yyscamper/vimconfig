@@ -218,7 +218,7 @@ snippet sqlloader "SQL Loader v2"
         skipBackup: true
         backupMedia: csv
         backupPath: '/Users/mdt/beep/backup/$3_`date +"%Y%m%d%H%M%S"`.csv'
-        preview: false
+        preview: true
         chunkSize: 100000
 		mergeFileds:
 		- extra
@@ -326,7 +326,7 @@ step0:
         skipBackup: true
         backupMedia: csv
         backupPath: '/Users/mdt/beep/backup/$3_`date +"%Y%m%d%H%M%S"`.csv'
-        preview: false
+        preview: true
         chunkSize: 1000000
 endsnippet
 
@@ -395,7 +395,7 @@ step0:
         skipBackup: true
         backupMedia: csv
         backupPath: '/Users/mdt/beep/backup/$2_`date +"%Y%m%d%H%M%S"`.csv'
-        preview: false
+        preview: true
         chunkSize: 1000000
 endsnippet
 
@@ -499,7 +499,21 @@ step1:
         skipBackup: true
         backupMedia: csv
         backupPath: '~/data/backup.csv'
-        preview: false
+        preview: true
+endsnippet
+
+snippet vars "Add global variables"
+__vars__:
+  city_id: 310300
+  source: mdt
+endsnippet
+
+snippet stages "Arrange stages"
+__stages__:
+  type: sequence
+  stages:
+    - stage2
+    - stage1
 endsnippet
 
 snippet beepsequence "Run multiple beep workflows"
@@ -512,10 +526,6 @@ __stages__:
 __vars__:
   city_id: 310300
   source: mdt
-
-Vars:
-  city_id: 310301
-  source: mds
 
 stage1:
   extract:
@@ -814,7 +824,13 @@ snippet templateprocessor "Process metdata using template function"
 endsnippet
 
 snippet serialid "Add Serial ID"
-
+    -
+      name: template-processor
+      type: raw
+      value:
+      -
+        column: id
+        template: "<%serialID 1 %>"
 endsnippet
 
 snippet filter "Only keep records that match with pattern"
@@ -865,6 +881,7 @@ snippet dbcachelookup "Lookup database cache"
         dstColumn: "source_district_id"
         cacheName: "algo_base_station_info"
         cachePath: "district_id"
+		ignoreLookupFailure: true
 endsnippet
 
 snippet dbexec "Execute Query in Database"
@@ -876,15 +893,6 @@ snippet dbexec "Execute Query in Database"
 		sqls:
 		  - "SELECT * FROM test"
 		  - "SELECT * FROM source"
-endsnippet
-
-
-snippet removecolumns "Remove columns"
-    -
-      name: remove-columns
-      type: raw
-      value:
-        - _id
 endsnippet
 
 snippet env "Add environment variables"
@@ -975,6 +983,26 @@ snippet noopcmd "Noop command"
 	  name: noop
 	  type: raw
 	  value:
+endsnippet
+
+snippet distinct "Remove duplicated columns, keep distinct"
+	-
+	  name: distinct
+	  type: raw
+	  value:
+	    columns:
+		- name
+		- city
+endsnippet
+
+snippet removeduplication "Remove duplicated columns, keep distinct"
+	-
+	  name: distinct
+	  type: raw
+	  value:
+	    columns:
+		- name
+		- city
 endsnippet
 
 snippet matchcity "Assign official city id and city name"
