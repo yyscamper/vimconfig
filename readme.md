@@ -10,6 +10,10 @@ git clone https://github.com/yyscamper/vimconfig.git
 2.Link vim config file
 ```
 ln -s vimconfig/vimrc ~/.vimrc
+
+# if you want use neovim, and want it to share config with vim:
+ln -s ~/.vim .config/nvim
+ln -s ~/.vimrc .config/nvim/init.vim
 ```
 
 3.Install [Vundle](https://github.com/gmarik/Vundle.vim)

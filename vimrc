@@ -1,3 +1,4 @@
+scriptencoding utf-8
 
 " Author: Felix Yuan
 " Email: yyscamper@163.com
@@ -13,7 +14,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle Setting
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set nocompatible
+" set nocompatible
 filetype off
 set shell=/bin/bash
 
@@ -38,7 +39,7 @@ Plug 'altercation/vim-colors-solarized'
 "Plug 'ashwin/vim-powerline'
 Plug 'bling/vim-airline'
 " Plug 'scrooloose/nerdtree', { 'on': ['NERDTreeToggle', 'NERDTreeTabsToggle'] }
-Plug 'scrooloose/nerdtree' 
+Plug 'scrooloose/nerdtree'
 Plug 'jistr/vim-nerdtree-tabs'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 "Plug 'bufexplorer.zip'
@@ -87,12 +88,19 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
-Plug 'thinca/vim-quickrun', { 'on': 'QuickRun' }
+" Plug 'thinca/vim-quickrun', { 'on': 'QuickRun' }
+Plug 'janko-m/vim-test'
+Plug 'skywind3000/asyncrun.vim'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'Raimondi/delimitMate'
-Plug 'roxma/nvim-completion-manager'
+Plug 'ncm2/ncm2'
+Plug 'roxma/nvim-yarp'
+Plug 'ncm2/ncm2-bufword'
+Plug 'ncm2/ncm2-path'
+Plug 'ncm2/ncm2-jedi'
+Plug 'ncm2/ncm2-vim'
 Plug 'Shougo/neco-vim'
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -112,7 +120,7 @@ Plug 'jiangmiao/simple-javascript-indenter', { 'for': 'javascript'}
 Plug 'ramitos/jsctags', { 'for': 'javascript'}
 
 " Python
-" Plug 'python-mode/python-mode', { 'for': 'python'}
+Plug 'python-mode/python-mode', { 'for': 'python'}
 Plug 'davidhalter/jedi-vim'
 Plug 'davidhalter/jedi'
 
@@ -143,8 +151,17 @@ filetype plugin indent on    " required
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Setup separate virutla environment for Neovim
 if has('nvim')
-    let g:python_host_prj = '/Users/mdt/.vim/venv2/bin/python'
-    let g:python3_host_prj = '/Users/mdt/.vim/venv/bin/python'
+    let g:python_host_prog = '/Users/yuany/envs/neovim2/bin/python'
+    let g:python3_host_prog = '/Users/yuany/envs/neovim3/bin/python'
+
+    " Make escape work in the Neovim terminal.
+    tnoremap <Esc> <C-\><C-n>
+
+    " Make navigation into and out of Neovim terminal splits nicer.
+    tnoremap <C-h> <C-\><C-N><C-w>h
+    tnoremap <C-j> <C-\><C-N><C-w>j
+    tnoremap <C-k> <C-\><C-N><C-w>k
+    tnoremap <C-l> <C-\><C-N><C-w>l
 endif
 
 " during insert mode, remap the ESC to avoid long finger keystroke
@@ -166,8 +183,8 @@ set autoread
 
 " With a map leader it's possible to do extra key combinations
 " like <leader>w saves the current file
-let mapleader = ","
-let g:mapleader = ","
+let mapleader = ','
+let g:mapleader = ','
 
 " Fast saving
 nmap <leader>w :w!<cr>
@@ -210,6 +227,26 @@ nnoremap 'f <C-I>
 
 " start to replace the current word
 nnoremap <leader>s :%s/<C-r><C-w>/
+
+
+function! ConfigForLargeFile()
+  " no syntax highlighting etc
+  set eventignore+=FileType
+  " save memory when other file is viewed
+  setlocal bufhidden=unload
+  " is read-only (write with :w new_filename)
+  setlocal buftype=nowrite
+  " no undo possible
+  setlocal undolevels=-1
+  " display message
+  autocmd VimEnter *  echo "The file is larger than " . (g:MyLargeFile / 1024 / 1024) . " MB, so some options are changed (see .vimrc for details)."
+endfunction
+
+" speed up opening large file
+let g:MyLargeFile = 64 * 1024 * 1024
+augroup auLargeFile
+  autocmd BufReadPre * let f=getfsize(expand("<afile>")) | if f > g:MyLargeFile || f == -2 | call ConfigForLargeFile() | endif
+augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -276,10 +313,10 @@ set softtabstop=4
 set shiftwidth=4
 
 " Auto indent, same with set autoindent
-set ai "Auto indent
+set autoindent "Auto indent
 
 " Smart indent, same with set smartindent
-set si "Smart indent
+set smartindent "Smart indent
 
 " Don't wrap lines
 set nowrap
@@ -384,8 +421,8 @@ set background=dark
 let g:solarized_termtrans=0
 let g:solarized_degrade=0
 let g:solarized_termcolors=256
-let g:solarized_contrast="normal"
-let g:solarized_visibility="normal"
+let g:solarized_contrast='normal'
+let g:solarized_visibility='normal'
 
 set t_Co=256
 
@@ -545,8 +582,9 @@ noremap <Leader>~m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
 " Format JSON by json.tool
 "nmap <C-J> :%!python -m json.tool<CR>:setfiletype json<CR>
-nmap <F6> :!mocha -R spec --require spec/helper.js %:p<CR>
-nmap <F7> :!./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require spec/helper.js %:p<CR>
+" nmap <F6> :!mocha -R spec --require spec/helper.js %:p<CR>
+" nmap <F7> :!./node_modules/.bin/istanbul cover ./node_modules/.bin/_mocha -- --require spec/helper.js %:p<CR>
+nmap <F6> :!pytest -x %:p<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree
@@ -561,6 +599,7 @@ let g:NERDTreeMapOpenSplit = 's'
 let g:NERDTreeMapOpenVSplit = 'v'
 let g:NERDTreeWinPos = 'right'
 let NERDTreeChDirMode = 2
+nmap <Leader>N :NERDTreeFind<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree-tab
@@ -827,7 +866,7 @@ set fillchars+=stl:\ ,stlnc:\
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-let g:airline_section_error = '%{ALEGetStatusLine()}'
+let g:airline#extensions#ale#enabled = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: YouCompleteMe
@@ -887,8 +926,7 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: tComment
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:tcommentMaps = 0
-
+let g:tcomment_maps = 0
 " Comment one line
 nnoremap <leader>cl :TComment<cr>
 vnoremap <leader>cl :TComment<cr>
@@ -1062,10 +1100,10 @@ let g:ale_linters = {
 let g:ale_fixers = {
             \    'python': ['yapf'],
             \}
-let g:ale_sign_error = '×'
-let g:ale_sign_warning = '∼'
+let g:ale_sign_error = '✘'
+let g:ale_sign_warning = '❊'
 let g:airline#extensions#ale#enabled = 1
-let g:ale_statusline_format = ['× %d', '∼ %d', '√ OK']
+let g:ale_statusline_format = ['✘ %d', '❊ %d', '√ OK']
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_insert_leave = 1
 let g:ale_open_list = 0
@@ -1087,13 +1125,11 @@ nmap <Leader>ld :ALEDetail<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: python-mode
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:pymode = 0
+let g:pymode = 1
 
 let g:pymode_python = 'python3'
 
-let g:pymode_options = 1
-let g:pymode_options_max_line_length = 79
-let g:pymode_options_colorcolumn = 1
+let g:pymode_options = 0
 
 let g:pymode_indent = 1
 let g:pymode_folding = 0
@@ -1109,7 +1145,7 @@ let g:pymode_breakpoint_bind = 0
 let g:pymode_breakpoint_cmd = 0
 
 let g:pymode_rope = 0
-let g:pymode_rope_completion = 1
+let g:pymode_rope_completion = 0
 let g:pymode_rope_complete_on_dot = 1
 let g:pymode_rope_completion_bind = '<C-Space>'
 let g:pymode_rope_autoimport = 1
@@ -1141,15 +1177,56 @@ let g:jedi#rename_command = "gr"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: quickrun
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:quickrun_config = {
-            \   "_" : {
-            \       "outputter" : "message",
-            \   },
-            \}
+" let g:quickrun_config = {
+"             \   "_" : {
+"             \       "outputter" : "message",
+"             \   },
+"             \}
+"
+" let g:quickrun_no_default_key_mappings = 1
+" nmap <Leader>r <Plug>(quickrun)
+" map <F10> :QuickRun<CR>
 
-let g:quickrun_no_default_key_mappings = 1
-nmap <Leader>r <Plug>(quickrun)
-map <F10> :QuickRun<CR>
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: asyncrun
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:asyncrun_open = 31
+" Quick run via <F10>
+nnoremap <F10> :call <SID>compile_and_run()<CR>
+nnoremap <C-r> :call <SID>compile_and_run()<CR>
+
+augroup ASYNCRUN
+    autocmd!
+    " Automatically open the quickfix window
+    " autocmd User AsyncRunStart call asyncrun#quickfix_toggle(15, 1)
+augroup END
+
+function! s:compile_and_run()
+    exec 'w'
+    if &filetype == 'c'
+        exec "AsyncRun! gcc % -o %<; time ./%<"
+    elseif &filetype == 'cpp'
+        exec "AsyncRun! g++ -std=c++11 % -o %<; time ./%<"
+    elseif &filetype == 'java'
+        exec "AsyncRun! javac %; time java %<"
+    elseif &filetype == 'sh'
+        exec "AsyncRun! time bash %"
+    elseif &filetype == 'python'
+       exec "AsyncRun! time python3 %"
+    endif
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: vim-test
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let test#strategy = 'neovim'
+let test#python#runner = 'pytest'
+let test#go#runner = 'ginkgo'
+nmap <silent> 'tn :TestNearest<CR>
+nmap <silent> 'tf :TestFile<CR>
+nmap <silent> 'ts :TestSuite<CR>
+nmap <silent> 'tl :TestLast<CR>
+nmap <silent> 'tg :TestVisit<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: Rainbow Parentheses
@@ -1263,6 +1340,15 @@ inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 inoremap <expr> <CR> (pumvisible() ? "\<c-y>\<cr>" : "\<CR>")
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: ncm2
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" enable ncm2 for all buffers
+autocmd BufEnter * call ncm2#enable_for_buffer()
+
+" IMPORTANT: :help Ncm2PopupOpen for more information
+set completeopt=noinsert,menuone,noselect
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "整理python import
@@ -1355,7 +1441,7 @@ function! AutoSetFileLineLimit()
     if &filetype == 'python' || &filetype == 'go'
         setlocal textwidth=80
         setlocal colorcolumn=+1
-        let &colorcolumn="80,".join(range(129, 999), ",")
+        let &colorcolumn="80,".join(range(121, 999), ",")
         return
     endif
 
