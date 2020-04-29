@@ -88,6 +88,7 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'godlygeek/tabular', { 'on': 'Tabularize' }
 Plug 'tpope/vim-surround'
 Plug 'majutsushi/tagbar', { 'on': 'TagbarToggle' }
+Plug 'liuchengxu/vista.vim'
 " Plug 'thinca/vim-quickrun', { 'on': 'QuickRun' }
 Plug 'janko-m/vim-test'
 Plug 'skywind3000/asyncrun.vim'
@@ -138,6 +139,11 @@ Plug 'fatih/vim-go', { 'for': 'go'}
 " Plug 'powerman/vim-plugin-AnsiEsc'
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 Plug 'CodeFalling/fcitx-vim-osx'
+Plug 'kurkale6ka/vim-swap'
+
+" SQL
+Plug 'lifepillar/pgsql.vim'
+
 
 " All of your Plugins must be added before the following line
 call plug#end()
@@ -169,7 +175,7 @@ endif
 inoremap jk <Esc>`^
 " imap <Esc> <Esc>`^
 " unmap Esc so that force me to use the jk
-inoremap <Esc> <Nop>
+" inoremap <Esc> <Nop>
 
 " Sets how many lines of history VIM has to remember
 set history=700
@@ -589,7 +595,7 @@ nmap <F6> :!pytest -x %:p<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: NERDTree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-map <leader>x :set number!<CR>:set relativenumber!<CR>
+" map <leader>x :set number!<CR>:set relativenumber!<CR>
 let NERDTreeHighlightCursorline=1
 let NERDTreeIgnore=[ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.so$', '\.egg$', '^\.git$', '^\.svn$', '^\.hg$' ]
 "close vim if the only window left open is a NERDTree
@@ -1095,10 +1101,10 @@ set ttyfast
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ale_enabled = 1
 let g:ale_linters = {
-            \    'python': ['flake8'],
+            \    'python': ['flake8', 'isort'],
             \}
 let g:ale_fixers = {
-            \    'python': ['yapf'],
+            \    'python': ['yapf', 'isort'],
             \}
 let g:ale_sign_error = '✘'
 let g:ale_sign_warning = '❊'
@@ -1113,7 +1119,7 @@ let g:ale_emit_conflict_warnings = 1
 let g:ale_completion_enabled = 0
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_echo_msg_format = '[%linter%] %code%: %s [%severity%]'
 "普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
 nmap <leader>lk <Plug>(ale_previous_wrap)
 nmap <leader>lj <Plug>(ale_next_wrap)
@@ -1121,6 +1127,7 @@ nmap <leader>lj <Plug>(ale_next_wrap)
 nmap <Leader>ll :ALEToggle<CR>
 "<Leader>d查看错误或警告的详细信息
 nmap <Leader>ld :ALEDetail<CR>
+let g:ale_python_flake8_use_global = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugin: python-mode
@@ -1172,6 +1179,7 @@ let g:jedi#documentation_command = "K"
 let g:jedi#usages_command = "gn"
 let g:jedi#completions_command = "<C-Space>"
 let g:jedi#rename_command = "gr"
+let g:jedi#completions_enabled = 0
 " let g:jedi#force_py_version = 3
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -1221,6 +1229,7 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let test#strategy = 'neovim'
 let test#python#runner = 'pytest'
+let test#python#pytest#options = '-vvv'
 let test#go#runner = 'ginkgo'
 nmap <silent> 'tn :TestNearest<CR>
 nmap <silent> 'tf :TestFile<CR>
@@ -1347,6 +1356,14 @@ autocmd BufEnter * call ncm2#enable_for_buffer()
 
 " IMPORTANT: :help Ncm2PopupOpen for more information
 set completeopt=noinsert,menuone,noselect
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugin: pgsql.vim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" highlight .sql files using this plugin by default
+let g:sql_type_default = 'pgsql'
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => misc
